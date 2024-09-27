@@ -1,0 +1,45 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "local>oben01/renovate-config"
+  ],
+  "ignorePresets": [
+    "github>oben01/renovate-config:githubActions"
+  ],
+  "gitIgnoredAuthors": ["renovate[bot]@users.noreply.github.com"],
+  "regexManagers": [
+    {
+      "fileMatch": ["\\.yaml$"],
+      "matchStrings": [
+        "# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
+      ]
+    },
+    {
+      "fileMatch": ["^charts/obico/.*\\.yaml$"],
+      "matchStrings": [
+        "tag: sha-(?<currentDigest>.+)",
+        "appVersion: sha-(?<currentDigest>.+)"
+      ],
+      "datasourceTemplate": "git-refs",
+      "depNameTemplate": "TheSpaghettiDetective/obico-server",
+      "packageNameTemplate": "https://github.com/TheSpaghettiDetective/obico-server",
+      "currentValueTemplate": "release"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["helm"],
+      "commitMessageTopic": "{{depName}} Helm release"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/dgtlmoon/changedetection.io"],
+      "versioning": "loose"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/juanfont/headscale"],
+      "allowedVersions": "!/^0.23.0$/"
+    }
+  ]
+}

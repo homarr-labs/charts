@@ -1,0 +1,5 @@
+brew "pre-commit"
+brew "yq"
+brew "helm-docs"
+brew "helm"
+brew "artifacthub/cmd/ah"

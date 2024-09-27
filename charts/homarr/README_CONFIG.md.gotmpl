@@ -1,0 +1,209 @@
+{{- define "custom.chart.name" -}}
+Homarr
+{{- end -}}
+
+{{- define "custom.custom.configuration.header" -}}
+## 🎨 Custom configuration
+{{- end -}}
+
+{{- define "custom.custom.configuration" -}}
+{{ template "custom.custom.configuration.header" . }}
+
+### 🔐 Secrets
+
+To avoid including sensitive information in plain text within your version control, consider using a declarative approach by applying secrets directly with kubectl apply. For example, instead of including repository credentials in your Helm values, you can leverage a kubernetes secrets manager.
+
+Below is an exhaustive list of all secrets:
+
+<center>
+
+| FEATURE  | SECRET NAME             |      SECRET KEYS                                             |             Required           |
+|----------|-------------------------|--------------------------------------------------------------|--------------------------------|
+| NEXT AUTH| auth-credentials-secret |  auth-secret                                                 | Yes                            |
+| OIDC     | auth-oidc-secret        |  oidc-client-id<br>oidc-client-secret                        | No                             |
+| LDAP     | auth-ldap-secret        |  bind-password                                               | No                             |
+| DATABASE | db-secret               |  db-url<br>mysql-root-password<br>mysql-password             | Depends (see Database section) |
+
+</center>
+
+Example: Creating and Applying NEXT AUTH Secret
+
+To generate the NEXT AUTH secret, use the following command:
+
+```bash
+openssl rand -base64 32
+```
+
+You can apply the generated secret with:
+
+```bash
+kubectl create secret generic auth-credentials-secret \
+  --from-literal=auth-secret='<TO_CHANGE>' \
+--namespace homarr
+```
+
+For further information see [next-auth-secret](https://next-auth.js.org/configuration/options#secret)
+
+
+### 🗃️ Database
+
+You have multiple options for configuring the database:
+
+<center>
+
+| DRIVER TYPE   | Persistence mode                |
+|---------------|---------------------------------|
+| better-sqlite3| Pod disk                        |
+| better-sqlite3| `homarr-database` PVC           |
+| mysql2        | MySql database chart dependency |
+| mysql2        | External MySql database         |
+
+</center>
+
+#### Pod disk
+
+No additional configuration is required. However, keep in mind that if the pod restarts, all data will be lost. This setup is not *recommended* for production use.
+
+#### PVC
+
+To persist data, you need to enable the `homarr-database` PVC. This will store the Homarr database on a mounted volume.
+
+Associated secret to create :
+
+<details>
+<summary>Next Auth secret</summary>
+
+````yaml
+kubectl create secret generic auth-credentials-secret \
+  --from-literal=auth-secret='<NEXT_AUTH_SECRET_TO_CHANGE>' \
+--namespace homarr
+````
+
+</details>
+
+Bellow an example of the override value file :
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+persistence:
+  homarrDatabase:
+    enabled: true
+    storageClassName: "default"
+    size: "1Gi"
+````
+
+</details>
+
+#### MySql database chart dependency
+
+We are using [mysql bitnami](https://artifacthub.io/packages/helm/bitnami/mysql) chart as a dependency for data persistence. For additional configuration options, refer to the [Mysql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/mysql)
+
+To create the necessary database secrets, execute the following command:
+
+<details>
+<summary>Required Secrets</summary>
+
+````yaml
+kubectl create secret generic db-secret \
+--from-literal=db-url='mysql://homarr:your-db-password1@homarr-mysql:3306/homarrdb' \
+--from-literal=mysql-root-password='your-db-password1' \
+--from-literal=mysql-password='your-db-password2' \
+--namespace homarr
+````
+</details>
+
+if the key `mysql.auth.usersame` has been modified, please update the `db-url` accordingly. The database host and port should remain unchanged.
+
+
+Below is an example of the override values file:
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+mysql:
+  internal: true
+````
+</details>
+
+
+#### External MySql database
+
+The chart offer the possibility to use an external database.
+
+To create the necessary database secrets, execute the following command:
+
+<details>
+<summary>Required Secrets</summary>
+
+````yaml
+kubectl create secret generic db-secret \
+--from-literal=db-url='mysql://user:password@host:port/homarrdb' \
+--namespace homarr
+````
+</details>
+
+Below is an example of the override values file:
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+database:
+  externalDatabaseEnabled: true
+````
+</details>
+
+### 📸 Images
+
+You can import your local images into `homarr-images` PVC
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+persistence:
+  homarrImages:
+    enabled: true
+
+imagesCopy:
+  enabled: true
+  pathToLocalImages: "/path-to-local-images"
+````
+</details>
+
+
+### 🌐 Ingress
+
+The ingress section in the values.yaml file allows you to configure how external traffic accesses your application through an Ingress resource. This section defines whether Ingress is enabled, the class to use, and how to set up hosts, paths, and TLS for secure connections.
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+service:
+  enabled: true # Ensure the service is enabled for Ingress to route traffic
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+  # Add any additional annotations as needed
+  hosts:
+    - host: homarr.homelab.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - "homarr.homelab.dev"
+        - "www.homarr.homelab.dev"
+      secretName: homelab-tls
+````
+</details>
+
+
+All available values are listed on the [artifacthub](https://artifacthub.io/packages/helm/homarr/homarr?modal=values). If you find any issue please open an issue on [github](https://github.com/homarr-labs/charts/issues/new?assignees=maintainers&labels=bug&projects=&template=bug_report.yaml)
+
+{{- end -}}
