@@ -1,0 +1,261 @@
+# -- Default values for homarr
+# -- Declare variables to be passed into your templates.
+
+# -- Number of replicas
+replicaCount: 1
+
+image:
+  # -- Image repository
+  repository: ghcr.io/homarr-labs/homarr
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Overrides the image tag whose default is the chart appVersion
+  tag: "early-adopters"
+
+env:
+  # -- Your local time zone
+  TZ: "Europe/Paris"
+  # -- Colors and preferences, possible values dark / light
+  DEFAULT_COLOR_SCHEME: "dark"
+  # -- Enabled authentication methods. Multiple providers can be enabled with by separating them with , (ex. AUTH_PROVIDERS=credentials,oidc, it is highly recommended to just enable one provider).
+  AUTH_PROVIDERS: "credentials"
+  # -- URI of your LDAP server
+  AUTH_LDAP_URI:
+  # -- Base dn of your LDAP server
+  AUTH_LDAP_BASE:
+  # -- User used for finding users and groups
+  AUTH_LDAP_BIND_DN:
+  # -- Attribute used for username
+  AUTH_LDAP_USERNAME_ATTRIBUTE: "uid"
+  # -- Class used for querying groups
+  AUTH_LDAP_GROUP_CLASS: "groupOfUniqueNames"
+  # -- Attribute used for querying group member
+  AUTH_LDAP_GROUP_MEMBER_ATTRIBUTE: "member"
+  # -- User attribute used for comparing with group member
+  AUTH_LDAP_GROUP_MEMBER_USER_ATTRIBUTE: "dn"
+  # -- Admin group
+  AUTH_LDAP_ADMIN_GROUP: "admin"
+  # -- Owner group
+  AUTH_LDAP_OWNER_GROUP: "admin"
+  # -- LDAP search scope between base, one or sub
+  AUTH_LDAP_SEARCH_SCOPE: "base"
+  # -- URI of OIDC provider
+  AUTH_OIDC_URI:
+  # -- Display name of provider (in login screen)
+  AUTH_OIDC_CLIENT_NAME: "OIDC"
+  # -- Admin group
+  AUTH_OIDC_ADMIN_GROUP: "admin"
+  # -- Owner group
+  AUTH_OIDC_OWNER_GROUP: "admin"
+  # -- Override the OIDC scopes
+  AUTH_OIDC_SCOPE_OVERWRITE: "openid email profile groups"
+
+database:
+  # -- Enable external database
+  externalDatabaseEnabled: false
+  # -- Database migration configuration.
+  # DB_MIGRATIONS_DISABLED Set to `true` to disable database migrations.
+  # Migrations are enabled by default (`false`).
+  migrationEnabled: true
+
+# Sensitive values that need to be passed in through environment variables should use kubernetes secrets. In order
+# to use this, create the secret in your target namespace before applying this helm chart. If you really want to,
+# you CAN just put these in the env block above, but that is not recommended.
+envSecrets:
+  # The name of Next Auth existing secret
+  authCredentials:
+    # -- Name of existing secret containing Next Auth secret
+    existingSecret: "auth-credentials-secret"
+    # -- Next Auth secret key
+    authSecret: "auth-secret"
+  # The name of Auth OIDC existing secret
+  authOidcCredentials:
+    # -- Name of existing secret containing OIDC credentials
+    existingSecret: "auth-oidc-secret"
+    # -- ID of OIDC client (application) secret key
+    oidcClientId: "oidc-client-id"
+    # -- Secret of OIDC client (application) secret key
+    oidcClientSecret: "oidc-client-secret"
+  # The name of Auth LDAP existing secret
+  authLdapCredentials:
+    # -- Name of existing secret containing LDAP credentials
+    existingSecret: "auth-ldap-secret"
+    # -- Password for bind user secret key
+    ldapBindingPassword: "bind-password"
+  # The name of DB Credentials existing secret
+  dbCredentials:
+    # -- Name of existing secret containing DB credentials
+    existingSecret: "db-secret"
+    # -- Secret key for DB_URL
+    # Example for internal database: `mysql://username:password@homarr-mysql:3306/homarrdb`
+    dbUrlKey: "db-url"
+    # -- Secret key for DB_PASSWORD
+    dbPasswordKey: "mysql-root-password"
+    # -- Secret key for database user
+    dbUserPasswordKey: "mysql-password"
+
+# -- Secrets for Docker registry
+imagePullSecrets: []
+# -- Overrides chart's name
+nameOverride: ""
+# -- Overrides chart's fullname
+fullnameOverride: ""
+
+# -- Pod annotations
+podAnnotations: {}
+# -- Pod labels
+podLabels: {}
+
+# -- Pod security context
+podSecurityContext: {}
+# fsGroup: 2000
+
+# -- Security context
+securityContext: {}
+#   capabilities:
+#     drop:
+#     - ALL
+#   readOnlyRootFilesystem: true
+#   runAsNonRoot: true
+#   runAsUser: 1000
+
+# Service configuration
+service:
+  # -- Enable service
+  enabled: true
+  # -- Service type
+  type: ClusterIP
+  ports:
+    app:
+      # -- Service port
+      port: 7575
+      # -- Service target port
+      targetPort: http
+      # -- Service protocol
+      protocol: TCP
+
+livenessProbe:
+  httpGet:
+    # -- This is the liveness check endpoint used by Kubernetes to determine if the application is still running.
+    path: /api/health/live
+    # -- The port on which the liveness check will be performed. This must be the same as the container port exposed by the application.
+    port: 7575
+
+readinessProbe:
+  httpGet:
+    # -- This is the readiness check endpoint used by Kubernetes to determine if the application is ready to handle traffic.
+    path: /api/health/ready
+    # -- The port on which the readiness check will be performed. This must match the container's exposed port.
+    port: 7575
+
+# -- containerPorts defines the ports to open on the container. It is a map where each entry specifies:
+#    - `port`     (int)    (required): The port number to expose inside the container.
+#    - `protocol` (string) (required): The network protocol (TCP or UDP) used for the port.
+#    - `disabled` (bool)              : Optional flag to disable this port (defaults to false). Can be overridden via Helm values.
+#
+# By default, this configuration exposes TCP port 7575 with the name `http`.
+containerPorts:
+  http:
+    port: 7575
+    protocol: TCP
+
+# Ingress configuration
+ingress:
+  # -- Enable ingress
+  enabled: false
+  # -- Ingress class name
+  ingressClassName: ""
+  # -- Ingress annotations
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  # -- Ingress hosts configuration
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+  # -- Ingress TLS configuration
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# -- Resource configuration
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+#   memory: 128Mi
+
+# Autoscaling configuration
+autoscaling:
+  # -- Enable autoscaling
+  enabled: false
+  # -- Minimum replicas
+  minReplicas: 1
+  # -- Maximum replicas
+  maxReplicas: 100
+  # -- Target CPU utilization for autoscaling
+  targetCPUUtilizationPercentage: 80
+  # -- Target Memory utilization for autoscaling
+  # targetMemoryUtilizationPercentage: 80
+# -- Additional volumes on the output Deployment definition.
+
+# Persistent storage configuration
+persistence:
+  homarrDatabase:
+    # -- Enable homarr-database persistent storage
+    enabled: false
+    # -- homarr-database persistent storage name
+    name: "homarr-database"
+    # -- homarr-database storage class name
+    storageClassName: "local-path"
+    # -- homarr-database access mode
+    accessMode: "ReadWriteOnce"
+    # -- homarr-database storage size
+    size: "50Mi"
+    # -- homarr-database mount path inside the pod
+    mountPath: "/appdata/db"
+  homarrImages:
+    # -- Enable homarr-images persistent storage
+    enabled: false
+    # -- homarr-images persistent storage name
+    name: "homarr-images"
+    # -- homarr-images storage class name
+    storageClassName: "local-path"
+    # -- homarr-images access mode
+    accessMode: "ReadWriteOnce"
+    # -- homarr-images storage size
+    size: "50Mi"
+    # -- homarr-images mount path inside the pod
+    mountPath: "/images"
+
+# When the homarr-images PVC is enabled, you can export your local images to it.
+imagesCopy:
+  # -- Set to true to enable the init container for copying local images to the PVC. Requires homarr-images PVC to be enabled.
+  enabled: false
+  # -- The path where local images are stored for copying to the PVC
+  pathToLocalImages: "/path-to-local-images"
+
+# -- Node selectors for pod scheduling
+nodeSelector: {}
+# -- Node tolerations for pod scheduling
+tolerations: []
+# -- Node affinity for pod scheduling
+affinity: {}
+
+# -- Enable and configure Mysql database subchart under this key.
+#    For more options see [Mysql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/mysql)
+# @default -- See [values.yaml](./values.yaml)
+mysql:
+  internal: false
+  auth:
+    existingSecret: "db-secret"
+    username: homarr
+    database: homarrdb

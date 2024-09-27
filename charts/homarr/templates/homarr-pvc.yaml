@@ -1,0 +1,35 @@
+{{- range $key, $persistence := .Values.persistence }}
+{{- if and (eq $key "homarrDatabase")
+            (or (not (hasKey $.Values "env"))
+                (not $.Values.env.DB_HOST)
+                (eq $.Values.env.DB_HOST ""))
+            $persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $persistence.name }}
+spec:
+  accessModes:
+    - {{ $persistence.accessMode }}
+  storageClassName: "{{ $persistence.storageClassName }}"
+  resources:
+    requests:
+      storage: {{ $persistence.size }}
+---
+{{- end }}
+
+{{- if and (eq $key "homarrImages") $persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $persistence.name }}
+spec:
+  accessModes:
+    - {{ $persistence.accessMode }}
+  storageClassName: "{{ $persistence.storageClassName }}"
+  resources:
+    requests:
+      storage: {{ $persistence.size }}
+---
+{{- end }}
+{{- end }}
