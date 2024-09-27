@@ -1,0 +1,39 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: check-merge-conflict
+      - id: check-case-conflict
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.5
+    hooks:
+      - id: remove-crlf
+      - id: remove-tabs
+
+  - repo: local
+    hooks:
+      - id: helm-lint
+        name: Helm Lint
+        entry: hack/helm-lint.sh
+        language: script
+        files: ^charts/
+        pass_filenames: false
+
+      - id: ah-lint
+        name: Artifact Hub Lint
+        entry: ah lint --path=charts
+        language: system
+        files: ^charts/
+        pass_filenames: false
+
+      - id: helm-docs
+        name: Helm Docs
+        entry: hack/gen-helm-docs.sh
+        language: script
+        files: (README_CONFIG\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
+        pass_filenames: false
