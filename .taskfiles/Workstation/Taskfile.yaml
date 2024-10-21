@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  BREWFILE: "{{.ROOT_DIR}}/.taskfiles/Workstation/Brewfile"
+  GENERIC_BIN_DIR: "{{.ROOT_DIR}}/.bin"
+
+tasks:
+  brew:
+    desc: Install workstation dependencies with Brew
+    cmd: brew bundle --file {{.BREWFILE}}
+    preconditions:
+      - { msg: "Missing Homebrew", sh: "command -v brew" }
+      - { msg: "Missing Brewfile", sh: "test -f {{.BREWFILE}}" }
+
+  generic-linux:
+    desc: Install CLI tools into the projects .bin directory using curl
+    dir: "{{.GENERIC_BIN_DIR}}"
+    platforms: ["linux/amd64", "linux/arm64"]
+    cmds:
+      - for:
+          - pre-commit/pre-commit?as=pre-commit&type=script
+          - mikefarah/yq?as=yq&type=script
+          - norwoodj/helm-docs?as=helm-docs&type=script
+          - helm/helm?as=helm&type=script
+          - artifacthub/hub?as=ah&type=script
+        cmd: curl -fsSL "https://i.jpillora.com/{{.ITEM}}" | bash

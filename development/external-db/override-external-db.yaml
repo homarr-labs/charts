@@ -1,0 +1,11 @@
+service:
+  enabled: true
+  type: NodePort
+  ports:
+    app:
+      port: 7575
+      targetPort: 7575
+      nodePort: 30000
+
+mysql:
+  internal: true
