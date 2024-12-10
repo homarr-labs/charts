@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://homarr-labs.github.io/sitemap.xml
