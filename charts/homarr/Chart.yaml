@@ -3,7 +3,7 @@ name: homarr
 description: A Helm chart to deploy homarr for Kubernetes
 home: https://homarr-labs.github.io/charts/charts/homarr/
 type: application
-version: 0.0.1
+version: 0.0.2
 # renovate datasource=docker depName=ghcr.io/homarr-labs/homarr
 appVersion: "0.0.1"
 icon: https://raw.githubusercontent.com/homarr-labs/homarr/dev/charts/homarr/icon.svg
@@ -23,8 +23,8 @@ annotations:
     fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
     url: https://homarr-labs.github.io/charts/pgp_keys.asc
   artifacthub.io/changes: |-
-    - kind: added
-      description: Migrate chart
+    - kind: changed
+      description: Update mysql helm release to v11.1.20
   artifacthub.io/links: |-
     - name: App Source
       url: https://github.com/homarr-labs/homarr
