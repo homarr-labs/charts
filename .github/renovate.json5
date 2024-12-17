@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "labels": [
+    "dependencies",
+    "{{datasource}}",
+    "{{updateType}}"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["\\.yaml$"],
+      "matchStrings": [
+        "# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["helm"],
+      "commitMessageTopic": "{{depName}} Helm release"
+    }
+  ],
+  "baseBranches": [
+    "dev"
+  ]
+}

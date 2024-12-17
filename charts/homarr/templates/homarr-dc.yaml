@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "homarr.fullname" . }}
+  labels:
+    {{- include "homarr.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "homarr.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "homarr.labels" . | nindent 8 }}
+    {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+      initContainers:
+      {{- if .Values.mysql.internal }}
+        - name: wait-for-mysql
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z -v -w30 $DB_HOST 3306; do echo "Waiting for MySQL..."; sleep 5; done;' ]
+          env:
+            - name: DB_HOST
+              value: homarr-mysql
+      {{- end }}
+      {{- if and (.Values.persistence.homarrImages.enabled) (.Values.imagesCopy.enabled) }}
+        - name: image-copy-init
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args:
+            - "cp -r {{ .Values.imagesCopy.pathToLocalImages }}/* /images/"
+          volumeMounts:
+            - name: homarr-images
+              mountPath: /images
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range $key, $portSpec := .Values.containerPorts }}
+              {{- if not $portSpec.disabled }}
+            - name: {{ $key }}
+              containerPort: {{ int $portSpec.port }}
+              protocol: {{ $portSpec.protocol }}
+              {{- end }}
+            {{- end }}
+          {{- if .Values.livenessProbe }}
+          livenessProbe:
+{{ toYaml .Values.livenessProbe | indent 12 }}
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+          {{- end }}
+          {{- if .Values.readinessProbe }}
+          readinessProbe:
+{{ toYaml .Values.readinessProbe | indent 12 }}
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+          {{- end }}
+          env:
+           {{- range $key, $value := .Values.env }}
+           - name: {{ $key }}
+             value: "{{ $value }}"
+           {{- end }}
+           {{- if .Values.database.migrationEnabled}}
+           - name: DB_MIGRATIONS_DISABLED
+             value: "false"
+           {{- end }}
+           {{- if and (not .Values.mysql.internal) (not .Values.database.externalDatabaseEnabled) }}
+           - name: DB_DRIVER
+             value: "better-sqlite3"
+           - name: DB_DIALECT
+             value: "sqlite"
+           - name: DB_URL
+             value: "{{ printf "%s/db.sqlite" .Values.persistence.homarrDatabase.mountPath }}"
+           {{- end }}
+           {{- if or (.Values.mysql.internal) (.Values.database.externalDatabaseEnabled) }}
+           - name: DB_DRIVER
+             value: "mysql2"
+           - name: DB_DIALECT
+             value: "mysql"
+           - name: DB_URL
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
+                 key: {{ .Values.envSecrets.dbCredentials.dbUrlKey }}
+            {{- end }}
+
+            {{- if has "credentials" (splitList "," .Values.env.AUTH_PROVIDERS) }}
+           - name: AUTH_SECRET
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.envSecrets.authCredentials.existingSecret }}
+                 key: {{ .Values.envSecrets.authCredentials.authSecret }}
+            {{- end }}
+
+            {{- if has "ldap" (splitList "," .Values.env.AUTH_PROVIDERS) }}
+           - name: AUTH_LDAP_BIND_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.envSecrets.authLdapCredentials.existingSecret }}
+                 key: {{ .Values.envSecrets.authLdapCredentials.ldapBindingPassword }}
+            {{- end }}
+
+            {{- if has "oidc" (splitList "," .Values.env.AUTH_PROVIDERS) }}
+           - name: AUTH_OIDC_CLIENT_ID
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
+                 key: {{ .Values.envSecrets.authOidcCredentials.oidcClientId }}
+           - name: AUTH_OIDC_CLIENT_SECRET
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
+                 key: {{ .Values.envSecrets.authOidcCredentials.oidcClientSecret }}
+            {{- end }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          {{- range .Values.persistence }}
+          {{- if .enabled }}
+           - name: {{ .name }}
+             mountPath: {{ .mountPath }}
+          {{- end }}
+          {{- end }}
+      volumes:
+        {{- range .Values.persistence }}
+        {{- if .enabled }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+           claimName: {{ .name }}
+        {{- end }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

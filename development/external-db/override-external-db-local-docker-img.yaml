@@ -1,0 +1,16 @@
+image:
+  repository: localhost:5001/homarr
+  pullPolicy: IfNotPresent
+  tag: "1.0"
+
+service:
+  enabled: true
+  type: NodePort
+  ports:
+    app:
+      port: 7575
+      targetPort: 7575
+      nodePort: 30000
+
+mysql:
+  internal: true

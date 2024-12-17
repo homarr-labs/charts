@@ -1,0 +1,7 @@
+repositoryID: 962d6842-0940-4bcf-94d3-55c06f6b783f
+owners:
+  - name: homarr-labs/maintainers
+    email: homarr-labs@proton.me
+ignore:
+  - name: limo
+    version: ^0\.1\.[1-3]$

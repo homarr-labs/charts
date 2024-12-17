@@ -1,0 +1,40 @@
+name: 🐞 Bug Report
+description: Create a bug report to help us improve
+title: "bug: "
+labels: ["🐞❔ unconfirmed bug"]
+assignees:
+  - oben01
+  - manuel-rw
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: version
+    attributes:
+      label: Chart Version
+      description: What version of the chart are you using?
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Please accurately describe the bug you encountered.
+    validations:
+      required: true
+  - type: textarea
+    id: values
+    attributes:
+      label: values.yaml
+      description: |
+        Please copy and paste your `values.yaml` file. **Make sure to remove/replace all secrets!**
+      render: yaml
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: |
+        Please provide any relevant logs from Helm or the Pod. The logs will be automatically formatted as code, so you don't need to add backticks manually.
+        Example command to collect logs:
+        `kubectl -n homarr logs deployment/homarr --all-containers=true > homarr-logs.txt`
+      render: shell

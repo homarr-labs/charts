@@ -1,0 +1,34 @@
+/* Custom header color */
+[data-md-color-primary=indigo] {
+    --md-primary-fg-color: #2a309a;
+}
+
+.md-header__button.md-logo {
+    padding: .1rem;
+}
+
+.md-header__button.md-logo img, .md-header__button.md-logo svg {
+    height: 1.5rem;
+}
+
+/* Hide git tag */
+.md-source__fact--version {
+    display: none;
+}
+
+/* Widen grid */
+.md-grid {
+    max-width: 70rem;
+}
+
+.md-typeset .md-typeset__table img[align=right]:only-child {
+    margin: 0 0 0 0.5em;
+}
+
+.md-typeset img[alt$=" logo"] {
+    border-radius: 10px;
+}
+
+.md-typeset img[alt$=" icon"] {
+    border-radius: 3px;
+}
