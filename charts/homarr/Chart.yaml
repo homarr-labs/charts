@@ -3,7 +3,7 @@ name: homarr
 description: A Helm chart to deploy homarr for Kubernetes
 home: https://homarr-labs.github.io/charts/charts/homarr/
 type: application
-version: 0.1.0
+version: 0.2.0
 # renovate datasource=docker depName=ghcr.io/homarr-labs/homarr
 appVersion: "0.0.1"
 icon: https://raw.githubusercontent.com/homarr-labs/homarr/dev/charts/homarr/icon.svg
@@ -24,7 +24,7 @@ annotations:
     url: https://homarr-labs.github.io/charts/pgp_keys.asc
   artifacthub.io/changes: |-
     - kind: changed
-      description: Update mysql helm release to v12
+      description: Update mysql helm release to v12.2.0
   artifacthub.io/links: |-
     - name: App Source
       url: https://github.com/homarr-labs/homarr
