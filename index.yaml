@@ -4,6 +4,41 @@ entries:
   - annotations:
       artifacthub.io/changes: |-
         - kind: changed
+          description: update chart to version v1.0.0-beta.4
+      artifacthub.io/links: |-
+        - name: App Source
+          url: https://github.com/homarr-labs/homarr
+        - name: Chart Source
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
+      artifacthub.io/signKey: |
+        fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
+        url: https://homarr-labs.github.io/charts/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.0.0-beta.4
+    created: "2024-12-18T20:10:05.018670748Z"
+    dependencies:
+    - condition: mysql.internal
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.0
+    description: A Helm chart to deploy homarr for Kubernetes
+    digest: 04da0d6df9e03ddd7fc5c43d72300e486c8712bbaabc9bce5760e19f23b39e05
+    home: https://homarr-labs.github.io/charts/charts/homarr/
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
+    keywords:
+    - homarr
+    - dashboard
+    kubeVersion: '>=1.22.0-0'
+    name: homarr
+    sources:
+    - https://github.com/homarr-labs/homarr
+    type: application
+    urls:
+    - https://github.com/homarr-labs/charts/releases/download/homarr-0.2.1/homarr-0.2.1.tgz
+    version: 0.2.1
+  - annotations:
+      artifacthub.io/changes: |-
+        - kind: changed
           description: Update mysql helm release to v12.2.0
       artifacthub.io/links: |-
         - name: App Source
@@ -147,4 +182,4 @@ entries:
     urls:
     - charts/mysql-11.1.17.tgz
     version: 11.1.17
-generated: "2024-12-18T12:40:37.98418277Z"
+generated: "2024-12-18T20:10:05.018695975Z"
