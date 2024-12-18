@@ -44,7 +44,7 @@ entries:
         - name: App Source
           url: https://github.com/homarr-labs/homarr
         - name: Chart Source
-          url: https://github.com/homarr-labs/charts/tree/dev/charts/homarr
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
       artifacthub.io/signKey: |
         fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
         url: https://homarr-labs.github.io/charts/pgp_keys.asc
@@ -59,7 +59,7 @@ entries:
     description: A Helm chart to deploy homarr for Kubernetes
     digest: e17bcc340fcb3fd656247cd1259d06eaef7ab2cb5323a67d5687597dadbd46a7
     home: https://homarr-labs.github.io/charts/charts/homarr/
-    icon: https://raw.githubusercontent.com/homarr-labs/homarr/dev/charts/homarr/icon.svg
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
     keywords:
     - homarr
     - dashboard
@@ -79,7 +79,7 @@ entries:
         - name: App Source
           url: https://github.com/homarr-labs/homarr
         - name: Chart Source
-          url: https://github.com/homarr-labs/charts/tree/dev/charts/homarr
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
       artifacthub.io/signKey: |
         fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
         url: https://homarr-labs.github.io/charts/pgp_keys.asc
@@ -94,7 +94,7 @@ entries:
     description: A Helm chart to deploy homarr for Kubernetes
     digest: 988cd82b91128c795d91731e250332f5557e0a64782cdf61dbe4c5f9c81c066d
     home: https://homarr-labs.github.io/charts/charts/homarr/
-    icon: https://raw.githubusercontent.com/homarr-labs/homarr/dev/charts/homarr/icon.svg
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
     keywords:
     - homarr
     - dashboard
@@ -114,7 +114,7 @@ entries:
         - name: App Source
           url: https://github.com/homarr-labs/homarr
         - name: Chart Source
-          url: https://github.com/homarr-labs/charts/tree/dev/charts/homarr
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
       artifacthub.io/signKey: |
         fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
         url: https://homarr-labs.github.io/charts/pgp_keys.asc
@@ -129,7 +129,7 @@ entries:
     description: A Helm chart to deploy homarr for Kubernetes
     digest: d07aef04bd61ecc1e7bdcd35fe40597183b7cb2fd9e309d72ce53a02a420009f
     home: https://homarr-labs.github.io/charts/charts/homarr/
-    icon: https://raw.githubusercontent.com/homarr-labs/homarr/dev/charts/homarr/icon.svg
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
     keywords:
     - homarr
     - dashboard
@@ -139,47 +139,6 @@ entries:
     - https://github.com/homarr-labs/homarr
     type: application
     urls:
-    - homarr-0.0.1.tgz
+    - https://github.com/homarr-labs/charts/releases/download/homarr-0.0.1/homarr-0.0.1.tgz
     version: 0.0.1
-  mysql:
-  - annotations:
-      category: Database
-      images: |
-        - name: mysql
-          image: docker.io/bitnami/mysql:8.4.2-debian-12-r4
-        - name: mysqld-exporter
-          image: docker.io/bitnami/mysqld-exporter:0.15.1-debian-12-r32
-        - name: os-shell
-          image: docker.io/bitnami/os-shell:12-debian-12-r29
-      licenses: Apache-2.0
-    apiVersion: v2
-    appVersion: 8.4.2
-    created: "2024-12-17T20:05:47.140416+01:00"
-    dependencies:
-    - name: common
-      repository: oci://registry-1.docker.io/bitnamicharts
-      tags:
-      - bitnami-common
-      version: 2.x.x
-    description: MySQL is a fast, reliable, scalable, and easy to use open source
-      relational database system. Designed to handle mission-critical, heavy-load
-      production applications.
-    digest: 97eb57465c6d9e8f0c94ae67ae83331020f340a72ae9af83caee04c92c1168af
-    home: https://bitnami.com
-    icon: https://bitnami.com/assets/stacks/mysql/img/mysql-stack-220x234.png
-    keywords:
-    - mysql
-    - database
-    - sql
-    - cluster
-    - high availability
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: mysql
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/mysql
-    urls:
-    - charts/mysql-11.1.17.tgz
-    version: 11.1.17
-generated: "2024-12-18T20:10:05.018695975Z"
+generated: "2024-12-18T21:10:05.018695975Z"
