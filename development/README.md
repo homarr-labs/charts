@@ -48,12 +48,13 @@ kubectl create namespace homarr
 
 ```bash
 kubectl create secret generic auth-credentials-secret \
-  --from-literal=auth-secret='mAxnWLFaQE59MauTrCTm5sUq5xf3sdG5m0eKnp2e3OU' \
+--from-literal=auth-secret='mAxnWLFaQE59MauTrCTm5sUq5xf3sdG5m0eKnp2e3OU' \
 --namespace homarr
 ```
 
 ```bash
 kubectl create secret generic db-secret \
+--from-literal=db-encryption-key='d4d0dd977c9795b988e68f115f444c40334a63a391cfb9b3a0857d2d77deff03'  \
 --from-literal=db-url='mysql://homarr:your-db-password@homarr-mysql:3306/homarrdb' \
 --from-literal=mysql-root-password='your-db-password' \
 --from-literal=mysql-password='your-db-password' \
@@ -67,25 +68,25 @@ kubectl create secret generic db-secret \
 #### Internal Database
 
 ```bash
-helm install homarr ../charts/homarr/homarr-0.0.1.tgz --namespace homarr --values=internal-db/override-internal-db-local-docker-img.yaml
+helm install homarr ../charts/homarr/homarr-1.0.0.tgz --namespace homarr --values=internal-db/override-internal-db-local-docker-img.yaml
 ```
 
 #### External Database
 
 ```bash
-helm install homarr ../charts/homarr/homarr-0.0.1.tgz --namespace homarr --values=external-db/override-external-db-local-docker-img.yaml
+helm install homarr ../charts/homarr/homarr-1.0.0.tgz --namespace homarr --values=external-db/override-external-db-local-docker-img.yaml
 ```
 
 ### Use github docker image
 
 ```bash
-helm install homarr ../charts/homarr/homarr-0.0.1.tgz --namespace homarr --values=internal-db/override-internal-db.yaml
+helm install homarr ../charts/homarr/homarr-1.0.0.tgz --namespace homarr --values=internal-db/override-internal-db.yaml
 ```
 
 #### External Database
 
 ```bash
-helm install homarr ../charts/homarr/homarr-0.0.1.tgz --namespace homarr --values=external-db/override-external-db.yaml
+helm install homarr ../charts/homarr/homarr-1.0.0.tgz --namespace homarr --values=external-db/override-external-db.yaml
 ```
 
 ## Port forwarding Homarr
