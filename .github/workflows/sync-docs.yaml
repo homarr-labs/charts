@@ -22,6 +22,7 @@ jobs:
         with:
           repository: homarr-labs/documentation
           path: target-repo
+          token: ${{ secrets.GITHUB_TOKEN }}
           # TODO: Change to the main branch on stable release
           ref: docs/version-1.0
 
@@ -43,6 +44,8 @@ jobs:
           base: docs/version-1.0
           title: Update Helm chart documentation
           delete-branch: true
+          path: target-repo
+          team-reviewers: homarr-labs/maintainers
           body: |
             This PR updates the documentation file to match the latest Helm chart changes.
           labels: |
