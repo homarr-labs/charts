@@ -1,0 +1,50 @@
+name: Sync Helm Chart Docs to Homarr documentation Repo
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout helm chart Repo
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            charts/homarr/README.md
+          sparse-checkout-cone-mode: false
+
+      - name: Checkout Homarr documentation Repo
+        uses: actions/checkout@v4
+        with:
+          repository: homarr-labs/documentation
+          path: target-repo
+          # TODO: Change to the main branch on stable release
+          ref: docs/version-1.0
+
+      - name: Sync Documentation
+        run: |
+          cp charts/homarr/README.md target-repo/docs/getting-started/installation/helm.md
+          cd target-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "docs(helm): Update Helm chart documentation" || echo "No changes to commit"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          branch: update-helm-docs
+          # TODO: Change to the main branch on stable release
+          base: docs/version-1.0
+          title: Update Helm chart documentation
+          delete-branch: true
+          body: |
+            This PR updates the documentation file to match the latest Helm chart changes.
+          labels: |
+            helm
+            docs
