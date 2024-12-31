@@ -54,7 +54,7 @@ The command removes all the Kubernetes components associated with the chart **in
 
 ## 🔧 Configuration
 
-Read through the [values.yaml](./values.yaml) file. It has several commented out suggested values.
+Read through the [values.yaml](https://github.com/homarr-labs/charts/blob/dev/charts/homarr/values.yaml) file. It has several commented out suggested values.
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
