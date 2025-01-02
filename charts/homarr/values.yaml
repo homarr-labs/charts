@@ -10,7 +10,7 @@ image:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion
-  tag: "v1.0.0-beta.4"
+  tag: "v1.0.0-beta.10"
 
 env:
   # -- Your local time zone
@@ -86,6 +86,9 @@ envSecrets:
   dbCredentials:
     # -- Name of existing secret containing DB credentials
     existingSecret: "db-secret"
+    # -- Secret key for SECRET_ENCRYPTION_KEY
+    # can be generated with `openssl rand -hex 32`
+    dbEncryptionKey: "db-encryption-key"
     # -- Secret key for DB_URL
     # Example for internal database: `mysql://username:password@homarr-mysql:3306/homarrdb`
     dbUrlKey: "db-url"

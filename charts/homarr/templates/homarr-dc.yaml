@@ -136,6 +136,11 @@ spec:
                  name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
                  key: {{ .Values.envSecrets.authOidcCredentials.oidcClientSecret }}
             {{- end }}
+           - name: SECRET_ENCRYPTION_KEY
+             valueFrom:
+               secretKeyRef:
+                 name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
+                 key: {{ .Values.envSecrets.dbCredentials.dbEncryptionKey }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
