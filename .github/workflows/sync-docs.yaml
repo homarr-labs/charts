@@ -29,6 +29,7 @@ jobs:
       - name: Sync Documentation
         run: |
           cp charts/homarr/README.md target-repo/docs/getting-started/installation/helm.md
+          sed -i '1s/# Homarr/# Helm/' target-repo/docs/getting-started/installation/helm.md
           cd target-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -46,6 +47,7 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
+        id: cpr
         with:
           token: ${{ steps.obtainToken.outputs.token }}
           branch: docs/update-helm-docs
@@ -59,3 +61,8 @@ jobs:
           labels: |
             helm
             docs
+
+      - name: Enable Pull Request Automerge
+        run: gh pr merge --merge --auto "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ steps.obtainToken.outputs.token }}
