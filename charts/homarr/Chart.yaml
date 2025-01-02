@@ -3,7 +3,7 @@ name: homarr
 description: A Helm chart to deploy homarr for Kubernetes
 home: https://homarr-labs.github.io/charts/charts/homarr/
 type: application
-version: 1.0.0
+version: 1.1.0
 # renovate datasource=docker depName=ghcr.io/homarr-labs/homarr
 appVersion: "v1.0.0-beta.10"
 icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
@@ -24,7 +24,7 @@ annotations:
     url: https://homarr-labs.github.io/charts/pgp_keys.asc
   artifacthub.io/changes: |-
     - kind: changed
-      description: update app version to v1.0.0-beta.10
+      description: update SSO env variables
   artifacthub.io/links: |-
     - name: App Source
       url: https://github.com/homarr-labs/homarr
