@@ -255,7 +255,7 @@ affinity: {}
 
 # -- Enable and configure Mysql database subchart under this key.
 #    For more options see [Mysql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/mysql)
-# @default -- See [values.yaml](./values.yaml)
+# @default -- See [values.yaml](https://github.com/homarr-labs/charts/blob/dev/charts/homarr/values.yaml)
 mysql:
   internal: false
   auth:

@@ -48,13 +48,12 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ steps.obtainToken.outputs.token }}
-          branch: update-helm-docs
+          branch: docs/update-helm-docs
           # TODO: Change to the main branch on stable release
           base: docs/version-1.0
           title: Update Helm chart documentation
           delete-branch: true
           path: target-repo
-          team-reviewers: homarr-labs/maintainers
           body: |
             This PR updates the documentation file to match the latest Helm chart changes.
           labels: |
