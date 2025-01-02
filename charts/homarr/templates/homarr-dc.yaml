@@ -108,14 +108,6 @@ spec:
                  key: {{ .Values.envSecrets.dbCredentials.dbUrlKey }}
             {{- end }}
 
-            {{- if has "credentials" (splitList "," .Values.env.AUTH_PROVIDERS) }}
-           - name: AUTH_SECRET
-             valueFrom:
-               secretKeyRef:
-                 name: {{ .Values.envSecrets.authCredentials.existingSecret }}
-                 key: {{ .Values.envSecrets.authCredentials.authSecret }}
-            {{- end }}
-
             {{- if has "ldap" (splitList "," .Values.env.AUTH_PROVIDERS) }}
            - name: AUTH_LDAP_BIND_PASSWORD
              valueFrom:

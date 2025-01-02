@@ -15,10 +15,12 @@ image:
 env:
   # -- Your local time zone
   TZ: "Europe/Paris"
-  # -- Colors and preferences, possible values dark / light
-  DEFAULT_COLOR_SCHEME: "dark"
   # -- Enabled authentication methods. Multiple providers can be enabled with by separating them with , (ex. AUTH_PROVIDERS=credentials,oidc, it is highly recommended to just enable one provider).
   AUTH_PROVIDERS: "credentials"
+  # -- URL to redirect to after clicking logging out.
+  AUTH_LOGOUT_REDIRECT_URL:
+  # -- Time for the session to time out. Can be set as pure number, which will automatically be used in seconds, or followed by s, m, h or d for seconds, minutes, hours or days. (ex: "30m")
+  AUTH_SESSION_EXPIRY_TIME: "30d"
   # -- URI of your LDAP server
   AUTH_LDAP_URI:
   # -- Base dn of your LDAP server
@@ -27,28 +29,30 @@ env:
   AUTH_LDAP_BIND_DN:
   # -- Attribute used for username
   AUTH_LDAP_USERNAME_ATTRIBUTE: "uid"
+  # -- Attribute used for mail field
+  AUTH_LDAP_USER_MAIL_ATTRIBUTE: "mail"
   # -- Class used for querying groups
   AUTH_LDAP_GROUP_CLASS: "groupOfUniqueNames"
   # -- Attribute used for querying group member
   AUTH_LDAP_GROUP_MEMBER_ATTRIBUTE: "member"
   # -- User attribute used for comparing with group member
   AUTH_LDAP_GROUP_MEMBER_USER_ATTRIBUTE: "dn"
-  # -- Admin group
-  AUTH_LDAP_ADMIN_GROUP: "admin"
-  # -- Owner group
-  AUTH_LDAP_OWNER_GROUP: "admin"
   # -- LDAP search scope between base, one or sub
   AUTH_LDAP_SEARCH_SCOPE: "base"
-  # -- URI of OIDC provider
-  AUTH_OIDC_URI:
+  # -- Extra arguments for user search filter (& based)
+  AUTH_LDAP_USERNAME_FILTER_EXTRA_ARG:
+  # -- Extra arguments for user's groups search filter (& based)
+  AUTH_LDAP_GROUP_FILTER_EXTRA_ARG:
+  # -- Issuer URI of OIDC provider without trailing slash (/)
+  AUTH_OIDC_ISSUER:
   # -- Display name of provider (in login screen)
   AUTH_OIDC_CLIENT_NAME: "OIDC"
-  # -- Admin group
-  AUTH_OIDC_ADMIN_GROUP: "admin"
-  # -- Owner group
-  AUTH_OIDC_OWNER_GROUP: "admin"
+  # -- Automatically redirect to OIDC login
+  AUTH_OIDC_AUTO_LOGIN: "false"
   # -- Override the OIDC scopes
   AUTH_OIDC_SCOPE_OVERWRITE: "openid email profile groups"
+  # -- Attribute used for groups (roles) claim
+  AUTH_OIDC_GROUPS_ATTRIBUTE: "groups"
 
 database:
   # -- Enable external database
@@ -62,12 +66,6 @@ database:
 # to use this, create the secret in your target namespace before applying this helm chart. If you really want to,
 # you CAN just put these in the env block above, but that is not recommended.
 envSecrets:
-  # The name of Next Auth existing secret
-  authCredentials:
-    # -- Name of existing secret containing Next Auth secret
-    existingSecret: "auth-credentials-secret"
-    # -- Next Auth secret key
-    authSecret: "auth-secret"
   # The name of Auth OIDC existing secret
   authOidcCredentials:
     # -- Name of existing secret containing OIDC credentials
@@ -255,7 +253,7 @@ affinity: {}
 
 # -- Enable and configure Mysql database subchart under this key.
 #    For more options see [Mysql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/mysql)
-# @default -- See [values.yaml](./values.yaml)
+# @default -- See [values.yaml](https://github.com/homarr-labs/charts/blob/dev/charts/homarr/values.yaml)
 mysql:
   internal: false
   auth:

@@ -47,12 +47,6 @@ kubectl create namespace homarr
 ## Create homarr secrets
 
 ```bash
-kubectl create secret generic auth-credentials-secret \
---from-literal=auth-secret='mAxnWLFaQE59MauTrCTm5sUq5xf3sdG5m0eKnp2e3OU' \
---namespace homarr
-```
-
-```bash
 kubectl create secret generic db-secret \
 --from-literal=db-encryption-key='d4d0dd977c9795b988e68f115f444c40334a63a391cfb9b3a0857d2d77deff03'  \
 --from-literal=db-url='mysql://homarr:your-db-password@homarr-mysql:3306/homarrdb' \

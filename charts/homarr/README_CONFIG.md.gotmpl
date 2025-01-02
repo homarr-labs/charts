@@ -19,31 +19,11 @@ Below is an exhaustive list of all secrets:
 
 | FEATURE   | SECRET NAME             | SECRET KEYS                                                          | Required                                                              |
 |-----------|-------------------------|----------------------------------------------------------------------|-----------------------------------------------------------------------|
-| NEXT AUTH | auth-credentials-secret | auth-secret                                                          | Yes                                                                   |
 | OIDC      | auth-oidc-secret        | oidc-client-id<br>oidc-client-secret                                 | No                                                                    |
 | LDAP      | auth-ldap-secret        | bind-password                                                        | No                                                                    |
 | DATABASE  | db-secret               | db-encryption-key<br>db-url<br>mysql-root-password<br>mysql-password | Depends (see Database section) at least db-encryption-key is required |
 
 </center>
-
-Example: Creating and Applying NEXT AUTH Secret
-
-To generate the NEXT AUTH secret, use the following command:
-
-```bash
-openssl rand -base64 32
-```
-
-You can apply the generated secret with:
-
-```bash
-kubectl create secret generic auth-credentials-secret \
-  --from-literal=auth-secret='<TO_CHANGE>' \
---namespace homarr
-```
-
-For further information see [next-auth-secret](https://next-auth.js.org/configuration/options#secret)
-
 
 ### 🗃️ Database
 
@@ -82,17 +62,6 @@ kubectl create secret generic db-secret \
 To persist data, you need to enable the `homarr-database` PVC. This will store the Homarr database on a mounted volume.
 
 Associated secret to create :
-
-<details>
-<summary>Next Auth secret</summary>
-
-````yaml
-kubectl create secret generic auth-credentials-secret \
-  --from-literal=auth-secret='<NEXT_AUTH_SECRET_TO_CHANGE>' \
---namespace homarr
-````
-
-</details>
 
 <details>
 <summary>DB Required Secrets</summary>
