@@ -41,6 +41,8 @@ jobs:
         with:
           private_key: ${{ secrets.HOMARR_DOCS_SYNC_APP_PRIVATE_KEY }}
           app_id: ${{ vars.HOMARR_DOCS_SYNC_APP_ID }}
+          installation_retrieval_mode: repository
+          installation_retrieval_payload: homarr-labs/documentation
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
