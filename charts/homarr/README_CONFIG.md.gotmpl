@@ -3,13 +3,13 @@ Homarr
 {{- end -}}
 
 {{- define "custom.custom.configuration.header" -}}
-## 🎨 Custom configuration
+## Custom configuration
 {{- end -}}
 
 {{- define "custom.custom.configuration" -}}
 {{ template "custom.custom.configuration.header" . }}
 
-### 🔐 Secrets
+### Secrets
 
 To avoid including sensitive information in plain text within your version control, consider using a declarative approach by applying secrets directly with kubectl apply. For example, instead of including repository credentials in your Helm values, you can leverage a kubernetes secrets manager.
 
@@ -25,7 +25,7 @@ Below is an exhaustive list of all secrets:
 
 </center>
 
-### 🗃️ Database
+### Database
 
 You have multiple options for configuring the database:
 
@@ -151,7 +151,7 @@ database:
 ````
 </details>
 
-### 📸 Images
+### Images
 
 You can import your local images into `homarr-images` PVC
 
@@ -170,7 +170,7 @@ imagesCopy:
 </details>
 
 
-### 🌐 Ingress
+### Ingress
 
 The ingress section in the values.yaml file allows you to configure how external traffic accesses your application through an Ingress resource. This section defines whether Ingress is enabled, the class to use, and how to set up hosts, paths, and TLS for secure connections.
 
