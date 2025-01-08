@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg" align="right" width="92" alt="homarr logo">
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat)
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat)
 ![AppVersion: v1.0.0-beta.10](https://img.shields.io/badge/AppVersion-v1.0.0--beta.10-informational?style=flat)
 
@@ -22,7 +22,7 @@ Kubernetes: `>=1.22.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| <https://charts.bitnami.com/bitnami> | mysql | 12.2.0 |
+| <https://charts.bitnami.com/bitnami> | mysql | 12.2.1 |
 
 ## 🚀 Installing the Chart
 
