@@ -79,7 +79,7 @@ Scan through our [existing issues](https://github.com/homarr-labs/charts/issues)
    5. Change the artifacthub.io/changes label on Chart.yaml :
 
        ```shell
-      ./update-changelog.sh "<CHANGE_KIND>" "<DESCRIPTION>"
+      ./update-changelog.sh <CHANGE_KIND> "<DESCRIPTION>"
       # Example: ./update-changelog.sh "fixed" "hot fix"
        ```
       📍 **change kinds available :** added, changed or fixed
