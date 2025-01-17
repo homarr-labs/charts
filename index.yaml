@@ -4,6 +4,41 @@ entries:
   - annotations:
       artifacthub.io/changes: |-
         - kind: changed
+          description: update app version to v1.0.0
+      artifacthub.io/links: |-
+        - name: App Source
+          url: https://github.com/homarr-labs/homarr
+        - name: Chart Source
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
+      artifacthub.io/signKey: |
+        fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
+        url: https://homarr-labs.github.io/charts/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.0.0
+    created: "2025-01-17T14:40:35.349776368Z"
+    dependencies:
+    - condition: mysql.internal
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.2.0
+    description: A Helm chart to deploy homarr for Kubernetes
+    digest: a32694283e7185cde76771ffaaf323b61dd2f2b6638e20d01b60a0b4f43c3bd3
+    home: https://homarr-labs.github.io/charts/charts/homarr/
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
+    keywords:
+    - homarr
+    - dashboard
+    kubeVersion: '>=1.22.0-0'
+    name: homarr
+    sources:
+    - https://github.com/homarr-labs/homarr
+    type: application
+    urls:
+    - https://github.com/homarr-labs/charts/releases/download/homarr-2.0.0/homarr-2.0.0.tgz
+    version: 2.0.0
+  - annotations:
+      artifacthub.io/changes: |-
+        - kind: changed
           description: update app version to v1.0.0-beta.11
         - kind: added
           description: added AUTH_OIDC_NAME_ATTRIBUTE_OVERWRITE as env variable
@@ -248,4 +283,4 @@ entries:
     urls:
     - https://github.com/homarr-labs/charts/releases/download/homarr-0.0.1/homarr-0.0.1.tgz
     version: 0.0.1
-generated: "2025-01-04T22:01:15.350047577Z"
+generated: "2025-01-17T14:40:35.349817686Z"
