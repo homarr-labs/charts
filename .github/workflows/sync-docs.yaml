@@ -23,8 +23,7 @@ jobs:
           repository: homarr-labs/documentation
           path: target-repo
           token: ${{ secrets.GITHUB_TOKEN }}
-          # TODO: Change to the main branch on stable release
-          ref: docs/version-1.0
+          ref: master
 
       - name: Sync Documentation
         run: |
@@ -51,8 +50,7 @@ jobs:
         with:
           token: ${{ steps.obtainToken.outputs.token }}
           branch: docs/update-helm-docs
-          # TODO: Change to the main branch on stable release
-          base: docs/version-1.0
+          base: master
           title: Update Helm chart documentation
           delete-branch: true
           path: target-repo
