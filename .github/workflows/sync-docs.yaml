@@ -61,6 +61,7 @@ jobs:
             docs
 
       - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
         run: gh pr merge --merge --auto "${{ steps.cpr.outputs.pull-request-number }}" --repo https://github.com/homarr-labs/documentation
         env:
           GH_TOKEN: ${{ steps.obtainToken.outputs.token }}
