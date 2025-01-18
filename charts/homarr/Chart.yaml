@@ -18,6 +18,10 @@ keywords:
   - dashboard
 sources:
   - https://github.com/homarr-labs/homarr
+maintainers:
+  - name: oben01
+    email: homarr-labs@proton.me
+
 annotations:
   artifacthub.io/signKey: |
     fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840

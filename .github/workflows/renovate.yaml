@@ -42,7 +42,19 @@ jobs:
             core.setOutput("base_ref", pr.base.ref);
             core.setOutput("labels", pr.labels.map((e) => e.name).filter((e) => e));
 
+      - name: Check PR Title
+        id: pr_title_check
+        run: |
+          set -eu
+          if [[ "${{ steps.pr.outputs.title }}" == *"ghcr.io/homarr-labs/homarr docker tag"* || \
+                "${{ steps.pr.outputs.title }}" == *"update mysql helm release"* ]]; then
+            echo "result=true" >> $GITHUB_OUTPUT
+          else
+            echo "result=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Update changelog
+        if: steps.pr_title_check.outputs.result == 'true'
         env:
           TITLE: ${{ steps.pr.outputs.title }}
           CHANGELOG_APPEND: ${{ contains(steps.pr.outputs.labels, 'changelog-append') }}
@@ -52,25 +64,31 @@ jobs:
           ./hack/update-changelog.sh "changed" "$DESCRIPTION"
 
       - name: Set type to patch
-        if: contains(steps.pr.outputs.labels, 'patch') || contains(steps.pr.outputs.labels, 'digest')
+        if: steps.pr_title_check.outputs.result == 'true' &&
+          (contains(steps.pr.outputs.labels, 'patch') || contains(steps.pr.outputs.labels, 'digest'))
         run: echo TYPE=patch >>$GITHUB_ENV
       - name: Set type to minor
-        if: contains(steps.pr.outputs.labels, 'major') || contains(steps.pr.outputs.labels, 'minor')
+        if: steps.pr_title_check.outputs.result == 'true' &&
+          (contains(steps.pr.outputs.labels, 'major') || contains(steps.pr.outputs.labels, 'minor'))
         run: echo TYPE=minor >>$GITHUB_ENV
       - name: Update chart version
-        if: "!contains(steps.pr.outputs.labels, 'skip-version-bump')"
+        if: steps.pr_title_check.outputs.result == 'true' &&
+          !contains(steps.pr.outputs.labels, 'skip-version-bump')
         run: |
           set -eux
           ./hack/update-version.sh "$TYPE"
 
       - name: Install helm-docs
+        if: steps.pr_title_check.outputs.result == 'true'
         uses: gabe565/setup-helm-docs-action@v1
       - name: Generate Helm docs
+        if: steps.pr_title_check.outputs.result == 'true'
         run: |
           set -eu
           ./hack/gen-helm-docs.sh
 
       - name: Check if commit exists
+        if: steps.pr_title_check.outputs.result == 'true'
         id: commit_exists
         env:
           BASE_REF: ${{ steps.pr.outputs.base_ref }}
@@ -85,7 +103,9 @@ jobs:
           fi
 
       - name: Commit chart version
+        if: steps.pr_title_check.outputs.result == 'true' &&
+          steps.commit_exists.outputs.result == 'false' &&
+          !contains(steps.pr.outputs.labels, 'skip-chart-meta')
         uses: stefanzweifel/git-auto-commit-action@v5
-        if: steps.commit_exists.outputs.result == 'false' && !contains(steps.pr.outputs.labels, 'skip-chart-meta')
         with:
           commit_message: ${{ env.COMMIT_MESSAGE }}
