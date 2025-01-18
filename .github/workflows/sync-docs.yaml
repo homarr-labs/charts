@@ -3,7 +3,7 @@ name: Sync Helm Chart Docs to Homarr documentation Repo
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   sync-docs:
