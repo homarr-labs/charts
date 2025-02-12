@@ -262,3 +262,9 @@ mysql:
     existingSecret: "db-secret"
     username: homarr
     database: homarrdb
+
+# -- Enable RBAC resources for Kubernetes integration
+# Creates Role, ClusterRole, and associated bindings for Homarr's Kubernetes features
+rbac:
+  # -- Enable to create RBAC resources and activate Kubernetes integration
+  enabled: false
