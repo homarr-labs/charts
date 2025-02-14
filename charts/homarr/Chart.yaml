@@ -5,7 +5,7 @@ home: https://homarr-labs.github.io/charts/charts/homarr/
 type: application
 version: 2.5.0
 # renovate datasource=docker depName=ghcr.io/homarr-labs/homarr
-appVersion: "v1.5.0"
+appVersion: "v1.6.0"
 icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
 kubeVersion: ">=1.22.0-0"
 dependencies:
