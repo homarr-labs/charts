@@ -23,6 +23,9 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      {{- if .Values.rbac.enabled }}
+      serviceAccountName: "{{ .Release.Name }}-sa"
+      {{- end }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -80,6 +83,14 @@ spec:
             failureThreshold: 3
           {{- end }}
           env:
+           {{- if .Values.rbac.enabled }}
+           - name: KUBERNETES_SERVICE_ACCOUNT_NAME
+             value: {{ .Release.Name }}-sa
+           {{- end }}
+           - name: NEXT_PUBLIC_ENABLE_DOCKER
+             value: "false"
+           - name: NEXT_PUBLIC_ENABLE_KUBERNETES
+             value: {{ .Values.rbac.enabled | ternary "true" "false" | quote }}
            {{- range $key, $value := .Values.env }}
            - name: {{ $key }}
              value: "{{ $value }}"
