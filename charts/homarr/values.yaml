@@ -225,6 +225,8 @@ persistence:
     size: "50Mi"
     # -- homarr-database mount path inside the pod
     mountPath: "/appdata/db"
+    # -- homarr-database optional volumeClaimName to target specific PV
+    volumeClaimName: ""
   homarrImages:
     # -- Enable homarr-images persistent storage
     enabled: false
@@ -238,6 +240,8 @@ persistence:
     size: "50Mi"
     # -- homarr-images mount path inside the pod
     mountPath: "/images"
+    # -- homarr-images optional volumeClaimName to target specific PV
+    volumeClaimName: ""
 
 # When the homarr-images PVC is enabled, you can export your local images to it.
 imagesCopy:
