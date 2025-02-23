@@ -15,6 +15,10 @@ spec:
   resources:
     requests:
       storage: {{ $persistence.size }}
+  {{- if $persistence.volumeClaimName }}
+  volumeName: "{{ $persistence.volumeClaimName }}"
+  {{- end }}
+
 ---
 {{- end }}
 
@@ -30,6 +34,10 @@ spec:
   resources:
     requests:
       storage: {{ $persistence.size }}
+  {{- if $persistence.volumeClaimName }}
+  volumeName: "{{ $persistence.volumeClaimName }}"
+  {{- end }}
+
 ---
 {{- end }}
 {{- end }}
