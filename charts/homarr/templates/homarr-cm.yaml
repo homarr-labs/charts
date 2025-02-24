@@ -1,0 +1,12 @@
+{{- if and .Values.persistence.homarrTrustedCerts.enabled (eq .Values.persistence.homarrTrustedCerts.type "configmap") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "homarr.fullname" . }}-trusted-certificates
+  labels:
+    {{- include "homarr.labels" . | nindent 4 }}
+{{- with .Values.persistence.homarrTrustedCerts.certificates }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}

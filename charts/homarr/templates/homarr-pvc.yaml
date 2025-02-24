@@ -40,4 +40,23 @@ spec:
 
 ---
 {{- end }}
+
+{{- if and (eq $key "homarrTrustedCerts") $persistence.enabled (eq $persistence.type "pvc") }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $persistence.name }}
+spec:
+  accessModes:
+    - {{ $persistence.accessMode }}
+  storageClassName: "{{ $persistence.storageClassName }}"
+  resources:
+    requests:
+      storage: {{ $persistence.size }}
+  {{- if $persistence.volumeClaimName }}
+  volumeName: "{{ $persistence.volumeClaimName }}"
+  {{- end }}
+
+---
+{{- end }}
 {{- end }}
