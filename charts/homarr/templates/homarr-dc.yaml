@@ -138,12 +138,12 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           {{- range .Values.persistence }}
-          {{- if and .enabled (not (eq .type "configmap")) }}
+          {{- if and .enabled (or (not (hasKey . "type")) (eq .type "pvc")) }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
           {{- end }}
           {{- end }}
-          {{- if and .Values.persistence.homarrTrustedCerts.enabled (eq .Values.persistence.homarrTrustedCerts.type "configmap") }}
+          {{- if and .Values.persistence.homarrTrustedCerts.enabled (or (eq .Values.persistence.homarrTrustedCerts.type "configmap") (eq .Values.persistence.homarrTrustedCerts.type "secret")) }}
           {{- range $key, $cert := .Values.persistence.homarrTrustedCerts.certificates }}
             - name: certificates
               mountPath: /appdata/trusted-certificates/{{ $key }}
@@ -153,7 +153,7 @@ spec:
           {{- end }}
       volumes:
         {{- range .Values.persistence }}
-        {{- if and .enabled (not (eq .type "configmap")) }}
+        {{- if and .enabled (or (not (hasKey . "type")) (eq .type "pvc")) }}
         - name: {{ .name }}
           persistentVolumeClaim:
            claimName: {{ .name }}
@@ -163,6 +163,11 @@ spec:
         - name: certificates
           configMap:
             name: {{ include "homarr.fullname" . }}-trusted-certificates
+        {{- end }}
+        {{- if and .Values.persistence.homarrTrustedCerts.enabled (eq .Values.persistence.homarrTrustedCerts.type "secret") }}
+        - name: certificates
+          secret:
+            secretName: {{ .Values.persistence.homarrTrustedCerts.existingSecret | default (printf "%s-trusted-certificates" (include "homarr.fullname" .)) }}
         {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

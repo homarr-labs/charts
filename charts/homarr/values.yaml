@@ -245,12 +245,14 @@ persistence:
   homarrTrustedCerts:
     # -- Enable trusted certificates persistence
     enabled: false
-    # -- Persistence mode can be : configmap (declarative) or pvc (persistence storage)
+    # -- Persistence mode can be : configmap (declarative), secret (declarative) or pvc (persistence storage)
     type: configmap
+    # -- Existing secret to mount certificates. Only works with "secret" type. Secret should have file name as keys.
+    existingSecret: ""
     # -- homarr-trusted-certificates persistent storage name
     name: "homarr-trusted-certificates"
     # -- homarr-trusted-certificates storage class name
-    storageClassName: "local-path-retain"
+    storageClassName: "local-path"
     # -- homarr-trusted-certificates access mode
     accessMode: "ReadWriteOnce"
     # -- homarr-trusted-certificates storage size
@@ -259,33 +261,35 @@ persistence:
     mountPath: "/appdata/trusted-certificates"
     # -- homarr-trusted-certificates optional volumeClaimName to target specific PV
     volumeClaimName: ""
-    # -- homarr-trusted-certificates certificates, each entry will become a new trusted certificate as a dedicated file (works only for configmap mode)
+    # -- homarr-trusted-certificates certificates, each entry will become a new trusted certificate as a dedicated file (works only for "configmap" and "secret" mode)
     certificates:
       # cert1.crt: |
       #   -----BEGIN CERTIFICATE-----
-      #   MIIBlTCCAT+gAwIBAgIJAMf3+2vZ9kI9MAoGCCqGSM49BAMCMEUxCzAJBgNVBAYT
-      #   AlVTMQswCQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzAe
-      #   Fw0yNDAyMjMwMDAwMDBaFw0zNDAyMjIwMDAwMDBaMEUxCzAJBgNVBAYTAlVTMQsw
-      #   CQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzBZMBMGByqG
-      #   SM49AgEGCCqGSM49AwEHA0IABFqN3hzZo6/XR2/p/8Jk1dzHUIzB5HpZm5vXYTFe
-      #   4vBv3H6rXjW8fZ2+Fpe2qdoAVN8yQbgZ6U/EGQ8IX0+6U9GjUzBRMB0GA1UdDgQW
-      #   BBTkcPoCJjFc7CgXq1YkXRVQHMoF7jAfBgNVHSMEGDAWgBTkcPoCJjFc7CgXq1Yk
-      #   XRVQHMoF7jAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIQDE8S0F
-      #   4wNlIaxcHCD0BwZ3B2wbI4nmGq4Xr0GqS//ASgIgB94UzowtHiHX2FlumYeA7iSn
-      #   HsDLvE56NCO9rNkNmHc=
+      #   MIICCDCCAXGgAwIBAgIUQPCQCEX+rA4L1c/fWkpXyP4bxyQwDQYJKoZIhvcNAQEL
+      #   BQAwFjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wHhcNMjUwMjI0MTcwMDQwWhcNMjYw
+      #   MjI0MTcwMDQwWjAWMRQwEgYDVQQDDAtleGFtcGxlLmNvbTCBnzANBgkqhkiG9w0B
+      #   AQEFAAOBjQAwgYkCgYEArn735D+W3NHBsFM72G4ltoB3awSG8tlOUv4UbyysCcVd
+      #   lC6D9A2olM4hqvGU6P5gcA4C+3bSijxxDBfGjfrUU/XUYfdcQzWn4Z54hJxTcY61
+      #   78PetjZ0SMUtQXXdaUKdbemYlVEgXBlTIzpqiMUDeow6kEtv9LMiImSowf94YOsC
+      #   AwEAAaNTMFEwHQYDVR0OBBYEFDQoBSUt3ZyDxQP5rqavvpQxjbnkMB8GA1UdIwQY
+      #   MBaAFDQoBSUt3ZyDxQP5rqavvpQxjbnkMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZI
+      #   hvcNAQELBQADgYEACE6M0NmKgYQAZB9FsGRkSWJFbHPAC7LUQalpZhykus8iZHEx
+      #   /b+C7kj+gRogphaE8869yW2WDO7t4QHLJXh/fsEU13biK7yHank0EEa7mVIy5MBp
+      #   XnRFRotpLR8Xmzyb2LADxor3ZZbVpyGZ+Ic68kdeSCN//jo6WQEafN/xZho=
       #   -----END CERTIFICATE-----
       # cert2.crt: |
       #   -----BEGIN CERTIFICATE-----
-      #   MIIBljCCAT+gAwIBAgIJAICpS2bEKZ9rMAoGCCqGSM49BAMCMEUxCzAJBgNVBAYT
-      #   AlVTMQswCQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzAe
-      #   Fw0yNDAyMjMwMDAwMDBaFw0zNDAyMjIwMDAwMDBaMEUxCzAJBgNVBAYTAlVTMQsw
-      #   CQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzBZMBMGByqG
-      #   SM49AgEGCCqGSM49AwEHA0IABHqVZOmYz7DhF25md0Tt3cBlDFeF7MqKk5Y5Vj+i
-      #   DJLgrHR2/Yb7Ugzi8+rbZgO1mZNd3N2A6H7ebhVjR7HMEjCjUzBRMB0GA1UdDgQW
-      #   BBQt5u9zW6z4M+br7UZbByENcTQXWjAfBgNVHSMEGDAWgBQt5u9zW6z4M+br7UZb
-      #   ByENcTQXWjAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIQDm7owX
-      #   xg+qebCD2P2tdSxSnC3sX9vPlXyH/VhRntF84AIgO9xZ4/Iz9zt2k3l7gVY6/M8K
-      #   +ZGgtpDPl5A8gCMHhGI=
+      #   MIICAjCCAWugAwIBAgIUVpWs2tw4gpNahaT76q+XeVXd+hIwDQYJKoZIhvcNAQEL
+      #   BQAwEzERMA8GA1UEAwwIdG90by5jb20wHhcNMjUwMjI0MTcwMTA4WhcNMjYwMjI0
+      #   MTcwMTA4WjATMREwDwYDVQQDDAh0b3RvLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOB
+      #   jQAwgYkCgYEA0UxVYXJdBCv/XfWt6xUGrwmlJfDxOVt7qWJ9C9Z+1P/B7FIKeIiO
+      #   BNkcGFXUbMlRsSJ2DG1t6un3CzpkinivkOuAyjoMzA58RGAOrRMyweZkER2j2B9Q
+      #   iiY3WFNzl8KqPKsRBq2oS8FU72fzn1c7llNvKDIamSlVbKsc4yosIv8CAwEAAaNT
+      #   MFEwHQYDVR0OBBYEFCn0xxFSJudync+Koeo8noSymQ2iMB8GA1UdIwQYMBaAFCn0
+      #   xxFSJudync+Koeo8noSymQ2iMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEL
+      #   BQADgYEAFAklBGPb3ko+iOanMWVxHnX+ypVoYUqBP4g2OhbxIBVTWSRAOMQgvuan
+      #   2V+U3ZUzzxPFYJTH6+IytoB8PqSHUrSFPGaAEZPjiqK/1L+FXECKqyra3o6QdTGq
+      #   UeP5DExC1ADCMawZNf4o2cKPwdsVdx5x0mieB3qCshdviYBSTq8=
       #   -----END CERTIFICATE-----
 
 # When the homarr-images PVC is enabled, you can export your local images to it.

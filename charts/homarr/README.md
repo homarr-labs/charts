@@ -335,13 +335,14 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | persistence.homarrImages.storageClassName | string | `"local-path"` | homarr-images storage class name |
 | persistence.homarrImages.volumeClaimName | string | `""` | homarr-images optional volumeClaimName to target specific PV |
 | persistence.homarrTrustedCerts.accessMode | string | `"ReadWriteOnce"` | homarr-trusted-certificates access mode |
-| persistence.homarrTrustedCerts.certificates | string | `nil` | homarr-trusted-certificates certificates, each entry will become a new trusted certificate as a dedicated file (works only for configmap mode) |
+| persistence.homarrTrustedCerts.certificates | string | `nil` | homarr-trusted-certificates certificates, each entry will become a new trusted certificate as a dedicated file (works only for "configmap" and "secret" mode) |
 | persistence.homarrTrustedCerts.enabled | bool | `false` | Enable trusted certificates persistence |
+| persistence.homarrTrustedCerts.existingSecret | string | `""` | Existing secret to mount certificates. Only works with "secret" type. Secret should have file name as keys. |
 | persistence.homarrTrustedCerts.mountPath | string | `"/appdata/trusted-certificates"` | homarr-trusted-certificates  mount path inside the pod |
 | persistence.homarrTrustedCerts.name | string | `"homarr-trusted-certificates"` | homarr-trusted-certificates persistent storage name |
 | persistence.homarrTrustedCerts.size | string | `"50Mi"` | homarr-trusted-certificates storage size |
-| persistence.homarrTrustedCerts.storageClassName | string | `"local-path-retain"` | homarr-trusted-certificates storage class name |
-| persistence.homarrTrustedCerts.type | string | `"configmap"` | Persistence mode can be : configmap (declarative) or pvc (persistence storage) |
+| persistence.homarrTrustedCerts.storageClassName | string | `"local-path"` | homarr-trusted-certificates storage class name |
+| persistence.homarrTrustedCerts.type | string | `"configmap"` | Persistence mode can be : configmap (declarative), secret (declarative) or pvc (persistence storage) |
 | persistence.homarrTrustedCerts.volumeClaimName | string | `""` | homarr-trusted-certificates optional volumeClaimName to target specific PV |
 | podAnnotations | object | `{}` | Pod annotations |
 | podLabels | object | `{}` | Pod labels |
