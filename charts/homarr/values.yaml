@@ -242,6 +242,51 @@ persistence:
     mountPath: "/images"
     # -- homarr-images optional volumeClaimName to target specific PV
     volumeClaimName: ""
+  homarrTrustedCerts:
+    # -- Enable trusted certificates persistence
+    enabled: false
+    # -- Persistence mode can be : configmap (declarative) or pvc (persistence storage)
+    type: configmap
+    # -- homarr-trusted-certificates persistent storage name
+    name: "homarr-trusted-certificates"
+    # -- homarr-trusted-certificates storage class name
+    storageClassName: "local-path-retain"
+    # -- homarr-trusted-certificates access mode
+    accessMode: "ReadWriteOnce"
+    # -- homarr-trusted-certificates storage size
+    size: "50Mi"
+    # -- homarr-trusted-certificates  mount path inside the pod
+    mountPath: "/appdata/trusted-certificates"
+    # -- homarr-trusted-certificates optional volumeClaimName to target specific PV
+    volumeClaimName: ""
+    # -- homarr-trusted-certificates certificates, each entry will become a new trusted certificate as a dedicated file (works only for configmap mode)
+    certificates:
+      # cert1.crt: |
+      #   -----BEGIN CERTIFICATE-----
+      #   MIIBlTCCAT+gAwIBAgIJAMf3+2vZ9kI9MAoGCCqGSM49BAMCMEUxCzAJBgNVBAYT
+      #   AlVTMQswCQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzAe
+      #   Fw0yNDAyMjMwMDAwMDBaFw0zNDAyMjIwMDAwMDBaMEUxCzAJBgNVBAYTAlVTMQsw
+      #   CQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzBZMBMGByqG
+      #   SM49AgEGCCqGSM49AwEHA0IABFqN3hzZo6/XR2/p/8Jk1dzHUIzB5HpZm5vXYTFe
+      #   4vBv3H6rXjW8fZ2+Fpe2qdoAVN8yQbgZ6U/EGQ8IX0+6U9GjUzBRMB0GA1UdDgQW
+      #   BBTkcPoCJjFc7CgXq1YkXRVQHMoF7jAfBgNVHSMEGDAWgBTkcPoCJjFc7CgXq1Yk
+      #   XRVQHMoF7jAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIQDE8S0F
+      #   4wNlIaxcHCD0BwZ3B2wbI4nmGq4Xr0GqS//ASgIgB94UzowtHiHX2FlumYeA7iSn
+      #   HsDLvE56NCO9rNkNmHc=
+      #   -----END CERTIFICATE-----
+      # cert2.crt: |
+      #   -----BEGIN CERTIFICATE-----
+      #   MIIBljCCAT+gAwIBAgIJAICpS2bEKZ9rMAoGCCqGSM49BAMCMEUxCzAJBgNVBAYT
+      #   AlVTMQswCQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzAe
+      #   Fw0yNDAyMjMwMDAwMDBaFw0zNDAyMjIwMDAwMDBaMEUxCzAJBgNVBAYTAlVTMQsw
+      #   CQYDVQQIDAJDSTEMMAoGA1UEBwwDQ0lUMQ4wDAYDVQQKDAVUZXN0QzBZMBMGByqG
+      #   SM49AgEGCCqGSM49AwEHA0IABHqVZOmYz7DhF25md0Tt3cBlDFeF7MqKk5Y5Vj+i
+      #   DJLgrHR2/Yb7Ugzi8+rbZgO1mZNd3N2A6H7ebhVjR7HMEjCjUzBRMB0GA1UdDgQW
+      #   BBQt5u9zW6z4M+br7UZbByENcTQXWjAfBgNVHSMEGDAWgBQt5u9zW6z4M+br7UZb
+      #   ByENcTQXWjAPBgNVHRMBAf8EBTADAQH/MAoGCCqGSM49BAMCA0gAMEUCIQDm7owX
+      #   xg+qebCD2P2tdSxSnC3sX9vPlXyH/VhRntF84AIgO9xZ4/Iz9zt2k3l7gVY6/M8K
+      #   +ZGgtpDPl5A8gCMHhGI=
+      #   -----END CERTIFICATE-----
 
 # When the homarr-images PVC is enabled, you can export your local images to it.
 imagesCopy:
