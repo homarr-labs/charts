@@ -4,6 +4,9 @@
 # -- Number of replicas
 replicaCount: 1
 
+# -- Deployment strategy
+strategyType: RollingUpdate
+
 image:
   # -- Image repository
   repository: ghcr.io/homarr-labs/homarr
