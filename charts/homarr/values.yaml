@@ -4,6 +4,9 @@
 # -- Number of replicas
 replicaCount: 1
 
+# -- `strategyType` specifies the strategy used to replace old Pods by new ones. `strategyType` can be `"Recreate"` or `"RollingUpdate"`. `"RollingUpdate"` is the default value and updates Pods in a rolling update fashion. `"Recreate"` will kill all existing Pods before new ones are created. The `"Recreate"` strategy is necessary when persistent volume's `accessMode` is set to `"ReadWriteOnce"` when using `helm upgrade`, as pod volume attachments to an existing PersistentVolumeClaim need to be cleared before a new pod can attach to it.
+strategyType: RollingUpdate
+
 image:
   # -- Image repository
   repository: ghcr.io/homarr-labs/homarr
