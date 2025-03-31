@@ -31,6 +31,18 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Validate .Values.strategyType
+*/}}
+{{- define "homarr.validatedStrategyType" -}}
+{{- $strategy := .Values.strategyType | default "RollingUpdate" -}}
+{{- if or (eq $strategy "RollingUpdate") (eq $strategy "Recreate") -}}
+  {{- $strategy -}}
+{{- else -}}
+  {{- printf "RollingUpdate" -}}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "homarr.labels" -}}

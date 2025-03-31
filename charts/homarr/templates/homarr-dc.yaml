@@ -9,7 +9,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   strategy:
-     type: {{ .Values.strategyType }}
+     type: {{ include "homarr.validatedStrategyType" . }}
   selector:
     matchLabels:
       {{- include "homarr.selectorLabels" . | nindent 6 }}
