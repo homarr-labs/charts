@@ -25,10 +25,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: master
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Sync Documentation
         run: |
-          cp charts/homarr/README.md target-repo/docs/getting-started/installation/helm.md
-          sed -i '1s/# Homarr/# Helm/' target-repo/docs/getting-started/installation/helm.md
+          APP_VERSION=$(grep 'AppVersion:' target-repo/charts/homarr/README.md | sed -E 's/.*AppVersion: v([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+          echo "App Version: $APP_VERSION"
+
+          VERSION_EXISTS=$(jq -r '.[]' target-repo/versions.json | grep -Fx "$APP_VERSION" || true)
+
+          if [ -n "$VERSION_EXISTS" ]; then
+          DEST="target-repo/versioned_docs/version-$APP_VERSION/getting-started/installation"
+          else
+          DEST="target-repo/docs/getting-started/installation"
+          fi
+
+          cp charts/homarr/README.md "$DEST/helm.md"
+          sed -i '1s/# Homarr/# Helm/' "$DEST/helm.md"
+          
           cd target-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
