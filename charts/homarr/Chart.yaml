@@ -12,7 +12,7 @@ dependencies:
   - name: mysql
     repository: "https://charts.bitnami.com/bitnami"
     condition: mysql.internal
-    version: "12.3.4"
+    version: "12.3.5"
 keywords:
   - homarr
   - dashboard
