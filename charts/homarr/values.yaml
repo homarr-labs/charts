@@ -139,6 +139,19 @@ service:
       targetPort: http
       # -- Service protocol
       protocol: TCP
+  # -- Defines how the service assigns IP families (IPv4/IPv6)
+  # Possible values:
+  # - SingleStack (default): Only one IP family, usually IPv4
+  # - PreferDualStack: Use dual-stack if the cluster supports it, fallback to single
+  # - RequireDualStack: Fail if dual-stack cannot be assigned
+  ipFamilyPolicy: SingleStack
+  # -- List of IP families to use for the service.
+  # Examples:
+  # - ["IPv4"]
+  # - ["IPv6"]
+  # - ["IPv4", "IPv6"] for dual-stack
+  # Leave empty to use cluster default behavior
+  ipFamilies: [ ]
 
 livenessProbe:
   httpGet:
@@ -324,3 +337,17 @@ mysql:
 rbac:
   # -- Enable to create RBAC resources and activate Kubernetes integration
   enabled: false
+
+# -- Add static entries to /etc/hosts in the Pod.
+# This is useful in the following cases:
+# - You are running in a dual-stack cluster (IPv4 + IPv6) and want to force usage of IPv4 for specific hostnames
+# - Your application is having DNS resolution issues or IPv6 preference issues
+# - You need to override or simulate DNS entries without changing global DNS
+# - You are running in an air-gapped or isolated environment without external DNS
+# Example:
+# hostAliases:
+#   - ip: "192.168.1.10"
+#     hostnames:
+#       - "example.com"
+#       - "example.internal"
+hostAliases : []

@@ -11,6 +11,15 @@ metadata:
     {{- include "homarr.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type | default "ClusterIP" }}
+  {{- if .Values.service.ipFamilyPolicy }}
+  ipFamilyPolicy: {{ .Values.service.ipFamilyPolicy }}
+  {{- end }}
+  {{- if and .Values.service.ipFamilies (gt (len .Values.service.ipFamilies) 0) }}
+  ipFamilies:
+  {{- range .Values.service.ipFamilies }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
   ports:
   {{- range $key, $value := .Values.service.ports }}
     - name: {{ $key }}
