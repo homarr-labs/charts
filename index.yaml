@@ -4,6 +4,44 @@ entries:
   - annotations:
       artifacthub.io/changes: |-
         - kind: changed
+          description: Update ghcr.io/homarr-labs/homarr docker tag to v1.21.0
+      artifacthub.io/links: |-
+        - name: App Source
+          url: https://github.com/homarr-labs/homarr
+        - name: Chart Source
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
+      artifacthub.io/signKey: |
+        fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
+        url: https://homarr-labs.github.io/charts/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.21.0
+    created: "2025-05-24T10:27:20.862069021Z"
+    dependencies:
+    - condition: mysql.internal
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.0.0
+    description: A Helm chart to deploy homarr for Kubernetes
+    digest: ca8c1d9414d4c06b704b9ddc4a945f1fba277eaf9b79e1a6c36773c8237f3fee
+    home: https://homarr-labs.github.io/charts/charts/homarr/
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
+    keywords:
+    - homarr
+    - dashboard
+    kubeVersion: '>=1.24.0-0'
+    maintainers:
+    - email: homarr-labs@proton.me
+      name: oben01
+    name: homarr
+    sources:
+    - https://github.com/homarr-labs/homarr
+    type: application
+    urls:
+    - https://github.com/homarr-labs/charts/releases/download/homarr-3.14.0/homarr-3.14.0.tgz
+    version: 3.14.0
+  - annotations:
+      artifacthub.io/changes: |-
+        - kind: changed
           description: Update ghcr.io/homarr-labs/homarr docker tag to v1.20.0
       artifacthub.io/links: |-
         - name: App Source
@@ -1610,4 +1648,4 @@ entries:
     urls:
     - https://github.com/homarr-labs/charts/releases/download/homarr-0.0.1/homarr-0.0.1.tgz
     version: 0.0.1
-generated: "2025-05-16T20:21:32.058521775Z"
+generated: "2025-05-24T10:27:20.862397193Z"
