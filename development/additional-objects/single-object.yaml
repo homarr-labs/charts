@@ -1,0 +1,7 @@
+additionalObjects:
+  - apiVersion: onepassword.com/v1
+    kind: OnePasswordItem
+    metadata:
+      name: SECRET_NAME
+    spec:
+      itemPath: "vaults/VAULT/items/ITEM"

@@ -351,3 +351,7 @@ rbac:
 #       - "example.com"
 #       - "example.internal"
 hostAliases : []
+
+# -- Additional resources to deploy.
+# These objects are templated.
+additionalObjects: []
