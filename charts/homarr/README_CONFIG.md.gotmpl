@@ -198,7 +198,104 @@ ingress:
 ````
 </details>
 
+### Certificates
 
-All available values are listed on the [artifacthub](https://artifacthub.io/packages/helm/homarr/homarr?modal=values). If you find any issue please open an issue on [github](https://github.com/homarr-labs/charts/issues/new?assignees=maintainers&labels=bug&projects=&template=bug_report.yaml)
+Configuration for trusted certificate persistence. Supports:
+
+- Declarative config via `configmap` or `secret`
+- Pre-existing secret with `existingSecret`
+
+#### type: configmap
+
+Use inline certificates to generate a ConfigMap, mounted as individual files.
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+persistence:
+  homarrTrustedCerts:
+    enabled: true
+    type: configmap
+    certificates:
+      cert1.crt: |
+        -----BEGIN CERTIFICATE-----
+        MIID...ABCD==
+        -----END CERTIFICATE-----
+      cert2.crt: |
+        -----BEGIN CERTIFICATE-----
+        MIID...EFGH==
+        -----END CERTIFICATE-----
+````
+</details>
+
+Behavior:
+
+- Helm creates a ConfigMap with keys cert1.crt and cert2.crt
+- Mounts them as /appdata/trusted-certificates/cert1.crt and /appdata/trusted-certificates/cert2.crt
+
+#### type: secret
+
+Use inline certificates to generate a Kubernetes Secret, mounted as files.
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+persistence:
+  homarrTrustedCerts:
+    enabled: true
+    type: secret
+    certificates:
+      cert1.crt: |
+        -----BEGIN CERTIFICATE-----
+        MIIC...XYZ==
+        -----END CERTIFICATE-----
+      cart2.crt: |
+        -----BEGIN CERTIFICATE-----
+        MIIC...XYZ==
+        -----END CERTIFICATE-----
+````
+</details>
+
+Behavior:
+
+- Helm creates a Kubernetes Secret with cert1.crt and cart2.crt keys
+- Mounts it into the container
+
+#### type: existingSecret
+
+Use an existing Kubernetes Secret, assuming its keys are filenames.
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+persistence:
+  homarrTrustedCerts:
+    enabled: true
+    type: existingSecret
+    existingSecretName: "existingSecretName"
+    existingSecretKeys:
+        - cert3.crt
+        - cert4.crt
+````
+</details>
+
+Behavior:
+
+- No new Secret is created
+- Uses existingSecretName directly
+- Mounts all keys as files in /appdata/trusted-certificates
+
+#### Summary Table
+
+| Type             | Creates Resource | Requires Certificates | Uses Existing | Mounts As Files |
+| ---------------- | ---------------- | --------------------- | ------------- | --------------- |
+| `configmap`      | ConfigMap        | Yes (`certificates`)  | ❌            | ✅              |
+| `secret`         | Secret           | Yes (`certificates`)  | ❌            | ✅              |
+| `existingSecret` | ❌               | ❌                    | ✅            | ✅              |
+
+All available values are listed on the [artifacthub](https://artifacthub.io/packages/helm/homarr-labs/homarr?modal=values). If you find any issue please open an issue on [github](https://github.com/homarr-labs/charts/issues/new?assignees=maintainers&labels=bug&projects=&template=bug_report.yaml)
 
 {{- end -}}

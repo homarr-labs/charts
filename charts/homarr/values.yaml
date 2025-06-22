@@ -261,22 +261,16 @@ persistence:
   homarrTrustedCerts:
     # -- Enable trusted certificates persistence
     enabled: false
-    # -- Persistence mode can be : configmap (declarative), secret (declarative) or pvc (persistence storage)
+    # -- Persistence mode can be : configmap (declarative), secret (declarative) or existingSecret (mount an existing Kubernetes Secret by name and specify which keys to mount as files)
     type: configmap
-    # -- Existing secret to mount certificates. Only works with "secret" type. Secret should have file name as keys.
-    existingSecret: ""
-    # -- homarr-trusted-certificates persistent storage name
-    name: "homarr-trusted-certificates"
-    # -- homarr-trusted-certificates storage class name
-    storageClassName: "local-path"
-    # -- homarr-trusted-certificates access mode
-    accessMode: "ReadWriteOnce"
-    # -- homarr-trusted-certificates storage size
-    size: "50Mi"
+    # -- Name of the existing Kubernetes Secret to mount (required if type is "existingSecret")
+    existingSecretName: ""
+    # -- List of keys (filenames) to mount from the existing secret (used only when type is "existingSecret")
+    existingSecretKeys:
+      # - cert3.crt
+      # - cert4.crt
     # -- homarr-trusted-certificates  mount path inside the pod
     mountPath: "/appdata/trusted-certificates"
-    # -- homarr-trusted-certificates optional volumeClaimName to target specific PV
-    volumeClaimName: ""
     # -- homarr-trusted-certificates certificates, each entry will become a new trusted certificate as a dedicated file (works only for "configmap" and "secret" mode)
     certificates:
       # cert1.crt: |
