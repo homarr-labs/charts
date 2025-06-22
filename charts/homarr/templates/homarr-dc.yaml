@@ -9,7 +9,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   strategy:
-     type: {{ include "homarr.validatedStrategyType" . }}
+    type: {{ include "homarr.validatedStrategyType" . }}
   selector:
     matchLabels:
       {{- include "homarr.selectorLabels" . | nindent 6 }}
@@ -47,7 +47,7 @@ spec:
       {{- if and (.Values.persistence.homarrImages.enabled) (.Values.imagesCopy.enabled) }}
         - name: image-copy-init
           image: busybox
-          command: ["/bin/sh", "-c"]
+          command: [ "/bin/sh", "-c" ]
           args:
             - "cp -r {{ .Values.imagesCopy.pathToLocalImages }}/* /images/"
           volumeMounts:
@@ -86,66 +86,66 @@ spec:
           {{- end }}
           env:
            {{- if .Values.rbac.enabled }}
-           - name: KUBERNETES_SERVICE_ACCOUNT_NAME
-             value: {{ .Release.Name }}-sa
+            - name: KUBERNETES_SERVICE_ACCOUNT_NAME
+              value: {{ .Release.Name }}-sa
            {{- end }}
-           - name: ENABLE_DOCKER
-             value: "false"
-           - name: ENABLE_KUBERNETES
-             value: {{ .Values.rbac.enabled | ternary "true" "false" | quote }}
+            - name: ENABLE_DOCKER
+              value: "false"
+            - name: ENABLE_KUBERNETES
+              value: {{ .Values.rbac.enabled | ternary "true" "false" | quote }}
            {{- range $key, $value := .Values.env }}
-           - name: {{ $key }}
-             value: "{{ $value }}"
+            - name: {{ $key }}
+              value: "{{ $value }}"
            {{- end }}
            {{- if .Values.database.migrationEnabled}}
-           - name: DB_MIGRATIONS_DISABLED
-             value: "false"
+            - name: DB_MIGRATIONS_DISABLED
+              value: "false"
            {{- end }}
            {{- if and (not .Values.mysql.internal) (not .Values.database.externalDatabaseEnabled) }}
-           - name: DB_DRIVER
-             value: "better-sqlite3"
-           - name: DB_DIALECT
-             value: "sqlite"
-           - name: DB_URL
-             value: "{{ printf "%s/db.sqlite" .Values.persistence.homarrDatabase.mountPath }}"
+            - name: DB_DRIVER
+              value: "better-sqlite3"
+            - name: DB_DIALECT
+              value: "sqlite"
+            - name: DB_URL
+              value: "{{ printf "%s/db.sqlite" .Values.persistence.homarrDatabase.mountPath }}"
            {{- end }}
            {{- if or (.Values.mysql.internal) (.Values.database.externalDatabaseEnabled) }}
-           - name: DB_DRIVER
-             value: "mysql2"
-           - name: DB_DIALECT
-             value: "mysql"
-           - name: DB_URL
-             valueFrom:
-               secretKeyRef:
-                 name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
-                 key: {{ .Values.envSecrets.dbCredentials.dbUrlKey }}
+            - name: DB_DRIVER
+              value: "mysql2"
+            - name: DB_DIALECT
+              value: "mysql"
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
+                  key: {{ .Values.envSecrets.dbCredentials.dbUrlKey }}
             {{- end }}
 
             {{- if has "ldap" (splitList "," .Values.env.AUTH_PROVIDERS) }}
-           - name: AUTH_LDAP_BIND_PASSWORD
-             valueFrom:
-               secretKeyRef:
-                 name: {{ .Values.envSecrets.authLdapCredentials.existingSecret }}
-                 key: {{ .Values.envSecrets.authLdapCredentials.ldapBindingPassword }}
+            - name: AUTH_LDAP_BIND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.envSecrets.authLdapCredentials.existingSecret }}
+                  key: {{ .Values.envSecrets.authLdapCredentials.ldapBindingPassword }}
             {{- end }}
 
             {{- if has "oidc" (splitList "," .Values.env.AUTH_PROVIDERS) }}
-           - name: AUTH_OIDC_CLIENT_ID
-             valueFrom:
-               secretKeyRef:
-                 name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
-                 key: {{ .Values.envSecrets.authOidcCredentials.oidcClientId }}
-           - name: AUTH_OIDC_CLIENT_SECRET
-             valueFrom:
-               secretKeyRef:
-                 name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
-                 key: {{ .Values.envSecrets.authOidcCredentials.oidcClientSecret }}
+            - name: AUTH_OIDC_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
+                  key: {{ .Values.envSecrets.authOidcCredentials.oidcClientId }}
+            - name: AUTH_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.envSecrets.authOidcCredentials.existingSecret }}
+                  key: {{ .Values.envSecrets.authOidcCredentials.oidcClientSecret }}
             {{- end }}
-           - name: SECRET_ENCRYPTION_KEY
-             valueFrom:
-               secretKeyRef:
-                 name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
-                 key: {{ .Values.envSecrets.dbCredentials.dbEncryptionKey }}
+            - name: SECRET_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
+                  key: {{ .Values.envSecrets.dbCredentials.dbEncryptionKey }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -156,32 +156,51 @@ spec:
               mountPath: {{ .mountPath }}
           {{- end }}
           {{- end }}
-          {{- if and .Values.persistence.homarrTrustedCerts.enabled (or (eq .Values.persistence.homarrTrustedCerts.type "configmap") (eq .Values.persistence.homarrTrustedCerts.type "secret")) }}
-          {{- range $key, $cert := .Values.persistence.homarrTrustedCerts.certificates }}
-            - name: certificates
-              mountPath: /appdata/trusted-certificates/{{ $key }}
+          {{- if .Values.persistence.homarrTrustedCerts.enabled }}
+            {{- if eq .Values.persistence.homarrTrustedCerts.type "configmap" }}
+              {{- range $key, $_ := .Values.persistence.homarrTrustedCerts.certificates }}
+            - name: {{ include "homarr.fullname" $ }}-trusted-certificates
+              mountPath: {{ $.Values.persistence.homarrTrustedCerts.mountPath }}/{{ $key }}
               subPath: {{ $key }}
               readOnly: true
-          {{- end }}
+            {{- end }}
+            {{- else if eq .Values.persistence.homarrTrustedCerts.type "secret" }}
+              {{- range $key, $_ := .Values.persistence.homarrTrustedCerts.certificates }}
+            - name: {{ include "homarr.fullname" $ }}-trusted-certificates
+              mountPath: {{ $.Values.persistence.homarrTrustedCerts.mountPath }}/{{ $key }}
+              subPath: {{ $key }}
+              readOnly: true
+            {{- end }}
+            {{- else if eq .Values.persistence.homarrTrustedCerts.type "existingSecret" }}
+              {{- range $key := .Values.persistence.homarrTrustedCerts.existingSecretKeys }}
+            - name: {{ include "homarr.fullname" $ }}-trusted-certificates
+              mountPath: {{ $.Values.persistence.homarrTrustedCerts.mountPath }}/{{ $key }}
+              subPath: {{ $key }}
+              readOnly: true
+            {{- end }}
           {{- end }}
       volumes:
         {{- range .Values.persistence }}
         {{- if and .enabled (or (not (hasKey . "type")) (eq .type "pvc")) }}
         - name: {{ .name }}
           persistentVolumeClaim:
-           claimName: {{ .name }}
+            claimName: {{ .name }}
         {{- end }}
         {{- end }}
-        {{- if and .Values.persistence.homarrTrustedCerts.enabled (eq .Values.persistence.homarrTrustedCerts.type "configmap") }}
-        - name: certificates
+      {{- if .Values.persistence.homarrTrustedCerts.enabled }}
+        - name: {{ include "homarr.fullname" . }}-trusted-certificates
+        {{- if eq .Values.persistence.homarrTrustedCerts.type "configmap" }}
           configMap:
-            name: {{ include "homarr.fullname" . }}-trusted-certificates
-        {{- end }}
-        {{- if and .Values.persistence.homarrTrustedCerts.enabled (eq .Values.persistence.homarrTrustedCerts.type "secret") }}
-        - name: certificates
+            name: {{ include "homarr.fullname" . }}-trusted-certificates-cm
+        {{- else if eq .Values.persistence.homarrTrustedCerts.type "secret" }}
           secret:
-            secretName: {{ .Values.persistence.homarrTrustedCerts.existingSecret | default (printf "%s-trusted-certificates" (include "homarr.fullname" .)) }}
+            secretName: {{ include "homarr.fullname" . }}-trusted-certificates-secret
+        {{- else if eq .Values.persistence.homarrTrustedCerts.type "existingSecret" }}
+          secret:
+            secretName: {{ .Values.persistence.homarrTrustedCerts.existingSecretName }}
         {{- end }}
+      {{- end }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
