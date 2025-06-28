@@ -240,23 +240,8 @@ persistence:
     # -- homarr-database storage size
     size: "50Mi"
     # -- homarr-database mount path inside the pod
-    mountPath: "/appdata/db"
+    mountPath: "/appdata"
     # -- homarr-database optional volumeClaimName to target specific PV
-    volumeClaimName: ""
-  homarrImages:
-    # -- Enable homarr-images persistent storage
-    enabled: false
-    # -- homarr-images persistent storage name
-    name: "homarr-images"
-    # -- homarr-images storage class name
-    storageClassName: "local-path"
-    # -- homarr-images access mode
-    accessMode: "ReadWriteOnce"
-    # -- homarr-images storage size
-    size: "50Mi"
-    # -- homarr-images mount path inside the pod
-    mountPath: "/images"
-    # -- homarr-images optional volumeClaimName to target specific PV
     volumeClaimName: ""
   homarrTrustedCerts:
     # -- Enable trusted certificates persistence
@@ -301,13 +286,6 @@ persistence:
       #   2V+U3ZUzzxPFYJTH6+IytoB8PqSHUrSFPGaAEZPjiqK/1L+FXECKqyra3o6QdTGq
       #   UeP5DExC1ADCMawZNf4o2cKPwdsVdx5x0mieB3qCshdviYBSTq8=
       #   -----END CERTIFICATE-----
-
-# When the homarr-images PVC is enabled, you can export your local images to it.
-imagesCopy:
-  # -- Set to true to enable the init container for copying local images to the PVC. Requires homarr-images PVC to be enabled.
-  enabled: false
-  # -- The path where local images are stored for copying to the PVC
-  pathToLocalImages: "/path-to-local-images"
 
 # -- Node selectors for pod scheduling
 nodeSelector: {}

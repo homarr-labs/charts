@@ -151,25 +151,6 @@ database:
 ````
 </details>
 
-### Images
-
-You can import your local images into `homarr-images` PVC
-
-<details>
-<summary>values.yaml</summary>
-
-````yaml
-persistence:
-  homarrImages:
-    enabled: true
-
-imagesCopy:
-  enabled: true
-  pathToLocalImages: "/path-to-local-images"
-````
-</details>
-
-
 ### Ingress
 
 The ingress section in the values.yaml file allows you to configure how external traffic accesses your application through an Ingress resource. This section defines whether Ingress is enabled, the class to use, and how to set up hosts, paths, and TLS for secure connections.
