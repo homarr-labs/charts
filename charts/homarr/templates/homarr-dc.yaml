@@ -21,7 +21,7 @@ spec:
       {{- end }}
       labels:
         {{- include "homarr.labels" . | nindent 8 }}
-    {{- with .Values.podLabels }}
+        {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
@@ -43,16 +43,6 @@ spec:
           env:
             - name: DB_HOST
               value: homarr-mysql
-      {{- end }}
-      {{- if and (.Values.persistence.homarrImages.enabled) (.Values.imagesCopy.enabled) }}
-        - name: image-copy-init
-          image: busybox
-          command: [ "/bin/sh", "-c" ]
-          args:
-            - "cp -r {{ .Values.imagesCopy.pathToLocalImages }}/* /images/"
-          volumeMounts:
-            - name: homarr-images
-              mountPath: /images
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -150,12 +140,6 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          {{- range .Values.persistence }}
-          {{- if and .enabled (or (not (hasKey . "type")) (eq .type "pvc")) }}
-            - name: {{ .name }}
-              mountPath: {{ .mountPath }}
-          {{- end }}
-          {{- end }}
           {{- if .Values.persistence.homarrTrustedCerts.enabled }}
             {{- if eq .Values.persistence.homarrTrustedCerts.type "configmap" }}
               {{- range $key, $_ := .Values.persistence.homarrTrustedCerts.certificates }}
@@ -163,30 +147,29 @@ spec:
               mountPath: {{ $.Values.persistence.homarrTrustedCerts.mountPath }}/{{ $key }}
               subPath: {{ $key }}
               readOnly: true
-            {{- end }}
+              {{- end }}
             {{- else if eq .Values.persistence.homarrTrustedCerts.type "secret" }}
               {{- range $key, $_ := .Values.persistence.homarrTrustedCerts.certificates }}
             - name: {{ include "homarr.fullname" $ }}-trusted-certificates
               mountPath: {{ $.Values.persistence.homarrTrustedCerts.mountPath }}/{{ $key }}
               subPath: {{ $key }}
               readOnly: true
-            {{- end }}
+                {{- end }}
             {{- else if eq .Values.persistence.homarrTrustedCerts.type "existingSecret" }}
               {{- range $key := .Values.persistence.homarrTrustedCerts.existingSecretKeys }}
             - name: {{ include "homarr.fullname" $ }}-trusted-certificates
               mountPath: {{ $.Values.persistence.homarrTrustedCerts.mountPath }}/{{ $key }}
               subPath: {{ $key }}
               readOnly: true
+              {{- end }}
             {{- end }}
           {{- end }}
+          {{- if .Values.persistence.homarrDatabase.enabled }}
+            - name: {{ .Values.persistence.homarrDatabase.name }}
+              mountPath: {{ .Values.persistence.homarrDatabase.mountPath }}
+          {{- end }}
+
       volumes:
-        {{- range .Values.persistence }}
-        {{- if and .enabled (or (not (hasKey . "type")) (eq .type "pvc")) }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .name }}
-        {{- end }}
-        {{- end }}
       {{- if .Values.persistence.homarrTrustedCerts.enabled }}
         - name: {{ include "homarr.fullname" . }}-trusted-certificates
         {{- if eq .Values.persistence.homarrTrustedCerts.type "configmap" }}
@@ -200,6 +183,10 @@ spec:
             secretName: {{ .Values.persistence.homarrTrustedCerts.existingSecretName }}
         {{- end }}
       {{- end }}
+      {{- if .Values.persistence.homarrDatabase.enabled }}
+        - name: {{ .Values.persistence.homarrDatabase.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.homarrDatabase.name }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
