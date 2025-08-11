@@ -11,14 +11,14 @@ jobs:
 
     steps:
       - name: Checkout helm chart Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           sparse-checkout: |
             charts/homarr/README.md
           sparse-checkout-cone-mode: false
 
       - name: Checkout Homarr documentation Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: homarr-labs/documentation
           path: target-repo
