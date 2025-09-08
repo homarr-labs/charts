@@ -3,7 +3,7 @@ name: homarr
 description: A Helm chart to deploy homarr for Kubernetes
 home: https://homarr-labs.github.io/charts/charts/homarr/
 type: application
-version: 5.10.1
+version: 5.10.2
 # renovate datasource=docker depName=ghcr.io/homarr-labs/homarr
 appVersion: "v1.36.1"
 icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
@@ -12,7 +12,7 @@ dependencies:
   - name: mysql
     repository: "https://charts.bitnami.com/bitnami"
     condition: mysql.internal
-    version: "14.0.0"
+    version: "14.0.3"
 keywords:
   - homarr
   - dashboard
@@ -27,7 +27,7 @@ annotations:
     url: https://homarr-labs.github.io/charts/pgp_keys.asc
   artifacthub.io/changes: |-
     - kind: changed
-      description: Update ghcr.io/homarr-labs/homarr docker tag to v1.36.1
+      description: Update mysql helm release to v14.0.3
   artifacthub.io/links: |-
     - name: App Source
       url: https://github.com/homarr-labs/homarr
