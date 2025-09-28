@@ -1,24 +1,17 @@
-{{- range $key, $persistence := .Values.persistence }}
-{{- if and (eq $key "homarrDatabase")
-            (or (not (hasKey $.Values "env"))
-                (not $.Values.env.DB_HOST)
-                (eq $.Values.env.DB_HOST ""))
-            $persistence.enabled }}
+{{- if .Values.persistence.homarrDatabase.enabled}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ $persistence.name }}
+  name: {{ .Values.persistence.homarrDatabase.name }}
 spec:
   accessModes:
-    - {{ $persistence.accessMode }}
-  storageClassName: "{{ $persistence.storageClassName }}"
+    - {{ .Values.persistence.homarrDatabase.accessMode }}
+  storageClassName: "{{ .Values.persistence.homarrDatabase.storageClassName }}"
   resources:
     requests:
-      storage: {{ $persistence.size }}
-  {{- if $persistence.volumeClaimName }}
-  volumeName: "{{ $persistence.volumeClaimName }}"
+      storage: {{ .Values.persistence.homarrDatabase.size }}
+  {{- if .Values.persistence.homarrDatabase.volumeClaimName }}
+  volumeName: "{{ .Values.persistence.homarrDatabase.volumeClaimName }}"
   {{- end }}
 
----
-{{- end }}
 {{- end }}

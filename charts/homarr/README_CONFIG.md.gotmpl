@@ -18,10 +18,10 @@ Below is an exhaustive list of all secrets:
 <center>
 
 | FEATURE   | SECRET NAME             | SECRET KEYS                                                          | Required                                                              |
-|-----------|-------------------------|----------------------------------------------------------------------|-----------------------------------------------------------------------|
-| OIDC      | auth-oidc-secret        | oidc-client-id<br>oidc-client-secret                                 | No                                                                    |
-| LDAP      | auth-ldap-secret        | bind-password                                                        | No                                                                    |
-| DATABASE  | db-secret               | db-encryption-key<br>db-url<br>mysql-root-password<br>mysql-password | Depends (see Database section) at least db-encryption-key is required |
+|-----------|-------------------------|-----------------------------------------|-----------------------------------------------------------------------|
+| OIDC      | auth-oidc-secret        | oidc-client-id<br>oidc-client-secret    | No                                                                    |
+| LDAP      | auth-ldap-secret        | bind-password                           | No                                                                    |
+| DATABASE  | db-secret               | db-encryption-key<br>db-url             | Depends (see Database section) at least db-encryption-key is required |
 
 </center>
 
@@ -34,9 +34,9 @@ You have multiple options for configuring the database:
 | DRIVER TYPE    | Persistence mode                |
 |----------------|---------------------------------|
 | better-sqlite3 | Pod disk                        |
-| better-sqlite3 | `homarr-database` PVC           |
-| mysql2         | MySql database chart dependency |
+| better-sqlite3 | homarr-database PVC             |
 | mysql2         | External MySql database         |
+| node-postgres  | External Postgresql database    |
 
 </center>
 
@@ -89,43 +89,7 @@ persistence:
 
 </details>
 
-#### MySql database chart dependency
-
-We are using [mysql bitnami](https://artifacthub.io/packages/helm/bitnami/mysql) chart as a dependency for data persistence. For additional configuration options, refer to the [Mysql chart documentation](https://github.com/bitnami/charts/tree/main/bitnami/mysql)
-
-To create the necessary database secrets, execute the following command:
-
-<details>
-<summary>Required Secrets</summary>
-
-````yaml
-kubectl create secret generic db-secret \
---from-literal=db-encryption-key='<SECRET_ENCRYPTION_KEY_SECRET_TO_CHANGE>' \
---from-literal=db-url='mysql://homarr:your-db-password1@homarr-mysql:3306/homarrdb' \
---from-literal=mysql-root-password='your-db-password1' \
---from-literal=mysql-password='your-db-password2' \
---namespace homarr
-````
-</details>
-
-if the key `mysql.auth.usersame` has been modified, please update the `db-url` accordingly. The database host and port should remain unchanged.
-
-
-Below is an example of the override values file:
-
-<details>
-<summary>values.yaml</summary>
-
-````yaml
-mysql:
-  internal: true
-````
-</details>
-
-
 #### External MySql database
-
-The chart offer the possibility to use an external database.
 
 To create the necessary database secrets, execute the following command:
 
@@ -147,7 +111,33 @@ Below is an example of the override values file:
 
 ````yaml
 database:
-  externalDatabaseEnabled: true
+  type: mysql
+````
+</details>
+
+#### External Postgresql database
+
+To create the necessary database secrets, execute the following command:
+
+<details>
+<summary>Required Secrets</summary>
+
+````yaml
+kubectl create secret generic db-secret \
+--from-literal=db-encryption-key='<SECRET_ENCRYPTION_KEY_SECRET_TO_CHANGE>' \
+--from-literal=db-url='postgresql://user:password@host:port/homarrdb' \
+--namespace homarr
+````
+</details>
+
+Below is an example of the override values file:
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+database:
+  type: postgresql
 ````
 </details>
 
