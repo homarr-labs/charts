@@ -18,6 +18,12 @@ image:
 env:
   # -- Your local time zone
   TZ: "Europe/Paris"
+  # -- Log level to use. Possible values: debug/info/warn/error
+  LOG_LEVEL: "info"
+  # -- Disables some requests that need internet connection
+  NO_EXTERNAL_CONNECTION: "false"
+  # -- Enables dns caching. This is not yet working for all users. See #4006
+  ENABLE_DNS_CACHING: "false"
   # -- Enabled authentication methods. Multiple providers can be enabled with by separating them with , (ex. AUTH_PROVIDERS=credentials,oidc, it is highly recommended to just enable one provider).
   AUTH_PROVIDERS: "credentials"
   # -- URL to redirect to after clicking logging out.
@@ -60,8 +66,8 @@ env:
   AUTH_OIDC_NAME_ATTRIBUTE_OVERWRITE:
 
 database:
-  # -- Enable external database
-  externalDatabaseEnabled: false
+  # -- Database type: sqlite | mysql | postgresql
+  type: sqlite
   # -- Database migration configuration.
   # DB_MIGRATIONS_DISABLED Set to `true` to disable database migrations.
   # Migrations are enabled by default (`false`).
@@ -93,12 +99,8 @@ envSecrets:
     # can be generated with `openssl rand -hex 32`
     dbEncryptionKey: "db-encryption-key"
     # -- Secret key for DB_URL
-    # Example for internal database: `mysql://username:password@homarr-mysql:3306/homarrdb`
+    # Example for external database: `mysql://username:password@host:port/homarrdb` or `postgresql://username:password@host:port/homarrdb`
     dbUrlKey: "db-url"
-    # -- Secret key for DB_PASSWORD
-    dbPasswordKey: "mysql-root-password"
-    # -- Secret key for database user
-    dbUserPasswordKey: "mysql-password"
 
 # -- Secrets for Docker registry
 imagePullSecrets: []

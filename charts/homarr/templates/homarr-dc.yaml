@@ -91,19 +91,28 @@ spec:
             - name: DB_MIGRATIONS_DISABLED
               value: "false"
            {{- end }}
-           {{- if and (not .Values.mysql.internal) (not .Values.database.externalDatabaseEnabled) }}
+           {{- if eq .Values.database.type "sqlite" }}
             - name: DB_DRIVER
               value: "better-sqlite3"
             - name: DB_DIALECT
               value: "sqlite"
             - name: DB_URL
               value: "{{ printf "%s/db.sqlite" .Values.persistence.homarrDatabase.mountPath }}"
-           {{- end }}
-           {{- if or (.Values.mysql.internal) (.Values.database.externalDatabaseEnabled) }}
+           {{- else if eq .Values.database.type "mysql" }}
             - name: DB_DRIVER
               value: "mysql2"
             - name: DB_DIALECT
               value: "mysql"
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
+                  key: {{ .Values.envSecrets.dbCredentials.dbUrlKey }}
+            {{- else if eq .Values.database.type "postgresql" }}
+            - name: DB_DRIVER
+              value: "node-postgres"
+            - name: DB_DIALECT
+              value: "postgresql"
             - name: DB_URL
               valueFrom:
                 secretKeyRef:

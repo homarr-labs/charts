@@ -7,5 +7,5 @@ service:
       targetPort: 7575
       nodePort: 30000
 
-mysql:
-  internal: true
+database:
+  type: mysql
