@@ -15,21 +15,16 @@ To avoid including sensitive information in plain text within your version contr
 
 Below is an exhaustive list of all secrets:
 
-<center>
-
-| FEATURE   | SECRET NAME             | SECRET KEYS                                                          | Required                                                              |
+| FEATURE   | SECRET NAME             | SECRET KEYS                             | Required                                                              |
 |-----------|-------------------------|-----------------------------------------|-----------------------------------------------------------------------|
 | OIDC      | auth-oidc-secret        | oidc-client-id<br>oidc-client-secret    | No                                                                    |
 | LDAP      | auth-ldap-secret        | bind-password                           | No                                                                    |
 | DATABASE  | db-secret               | db-encryption-key<br>db-url             | Depends (see Database section) at least db-encryption-key is required |
 
-</center>
 
 ### Database
 
 You have multiple options for configuring the database:
-
-<center>
 
 | DRIVER TYPE    | Persistence mode                |
 |----------------|---------------------------------|
@@ -37,8 +32,6 @@ You have multiple options for configuring the database:
 | better-sqlite3 | homarr-database PVC             |
 | mysql2         | External MySql database         |
 | node-postgres  | External Postgresql database    |
-
-</center>
 
 #### Pod disk
 
