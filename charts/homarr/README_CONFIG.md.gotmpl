@@ -179,6 +179,42 @@ ingress:
 ````
 </details>
 
+### HTTPRoute (Gateway API)
+
+The httproute section in the values.yaml file allows you to configure how external traffic accesses your application using the Kubernetes Gateway API.
+This provides a more expressive and future-proof alternative to Ingress, with support for advanced routing, filters, and multiple parent Gateways.
+
+<details>
+<summary>values.yaml</summary>
+
+````yaml
+service:
+  enabled: true  # must be enabled for HTTPRoute to forward traffic
+httproute:
+  enabled: true
+  parentRefs:
+    - name: my-gateway
+      namespace: default
+  hostnames:
+    - homarr.homelab.dev
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: homarr
+          port: 8080
+````
+</details>
+
+#### Notes:
+
+- parentRefs: the Gateway(s) this route attaches to. Gateways must already exist.
+- hostnames: domain names this route applies to.
+- rules:  each rule can define matches (paths, headers, queries), optional filters, and backendRefs to services
+- TLS must be configured on the Gateway (not on HTTPRoute). For example, the Gateway can have a TLS listener for homarr.homelab.dev, and this route will automatically apply once matched.
+
 ### Certificates
 
 Configuration for trusted certificate persistence. Supports:
