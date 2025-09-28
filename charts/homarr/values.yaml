@@ -178,6 +178,39 @@ containerPorts:
     port: 7575
     protocol: TCP
 
+# -- Gateway API HTTPRoute configuration
+httproute:
+  # -- Enable HTTPRoute
+  enabled: false
+
+  # -- References to the parent Gateway(s) this route attaches to.
+  # Each item must include at least a `name`, and optionally a `namespace`.
+  parentRefs:
+    - name: my-gateway
+      namespace: default
+
+  # -- Hostnames this route matches (similar to ingress.hosts.host)
+  hostnames:
+    - chart-example.local
+
+  # -- List of routing rules.
+  # Each rule can include:
+  # - matches: path/header/query matching
+  # - filters: optional transformations (redirects, header modifications, etc.)
+  # - backendRefs: one or more Kubernetes Services to forward traffic to
+  rules:
+    - matches:
+        - path:
+            # -- Path match type. One of: Exact, PathPrefix, RegularExpression
+            type: PathPrefix
+            # -- Path value to match
+            value: /
+      # -- Optional filters for this rule (default: empty)
+      filters: []
+      backendRefs:
+        - name: homarr
+          port: 8080
+
 # Ingress configuration
 ingress:
   # -- Enable ingress
