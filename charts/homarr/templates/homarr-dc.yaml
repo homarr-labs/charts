@@ -35,15 +35,6 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
 
-      initContainers:
-      {{- if .Values.mysql.internal }}
-        - name: wait-for-mysql
-          image: busybox
-          command: [ 'sh', '-c', 'until nc -z -v -w30 $DB_HOST 3306; do echo "Waiting for MySQL..."; sleep 5; done;' ]
-          env:
-            - name: DB_HOST
-              value: homarr-mysql
-      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
