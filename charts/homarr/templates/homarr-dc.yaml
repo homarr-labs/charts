@@ -134,8 +134,8 @@ spec:
             - name: SECRET_ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.envSecrets.dbCredentials.existingSecret }}
-                  key: {{ .Values.envSecrets.dbCredentials.dbEncryptionKey }}
+                  name: {{ .Values.envSecrets.dbEncryption.existingSecret }}
+                  key: {{ .Values.envSecrets.dbEncryption.key }}
 
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
