@@ -95,12 +95,16 @@ envSecrets:
   dbCredentials:
     # -- Name of existing secret containing DB credentials
     existingSecret: "db-secret"
-    # -- Secret key for SECRET_ENCRYPTION_KEY
-    # can be generated with `openssl rand -hex 32`
-    dbEncryptionKey: "db-encryption-key"
     # -- Secret key for DB_URL
     # Example for external database: `mysql://username:password@host:port/homarrdb` or `postgresql://username:password@host:port/homarrdb`
     dbUrlKey: "db-url"
+  # The name of DB encryption existing secret
+  dbEncryption:
+    # -- Name of existing secret containing DB encryption
+    existingSecret: "db-encryption"
+    # -- Secret key for SECRET_ENCRYPTION_KEY
+    # can be generated with `openssl rand -hex 32`
+    key: "db-encryption-key"
 
 # -- Secrets for Docker registry
 imagePullSecrets: []

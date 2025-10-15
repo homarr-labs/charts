@@ -15,11 +15,12 @@ To avoid including sensitive information in plain text within your version contr
 
 Below is an exhaustive list of all secrets:
 
-| FEATURE   | SECRET NAME             | SECRET KEYS                             | Required                                                              |
-|-----------|-------------------------|-----------------------------------------|-----------------------------------------------------------------------|
-| OIDC      | auth-oidc-secret        | oidc-client-id<br>oidc-client-secret    | No                                                                    |
-| LDAP      | auth-ldap-secret        | bind-password                           | No                                                                    |
-| DATABASE  | db-secret               | db-encryption-key<br>db-url             | Depends (see Database section) at least db-encryption-key is required |
+| FEATURE   | SECRET NAME             | SECRET KEYS                             | Required |
+|-----------|-------------------------|-----------------------------------------|----------|
+| OIDC      | auth-oidc-secret        | oidc-client-id<br>oidc-client-secret    | No       |
+| LDAP      | auth-ldap-secret        | bind-password                           | No       |
+| DATABASE  | db-secret               | db-url                                  | No       |
+| DATABASE  | db-encryption           | db-encryption-key                       | yes      |
 
 
 ### Database
@@ -43,7 +44,7 @@ To create the necessary database secret, execute the following command:
 <summary>Required Secrets</summary>
 
 ````yaml
-kubectl create secret generic db-secret \
+kubectl create secret generic db-encryption \
 --from-literal=db-encryption-key='<SECRET_ENCRYPTION_KEY_SECRET_TO_CHANGE>' \
 --namespace homarr
 ````
@@ -60,7 +61,7 @@ Associated secret to create :
 <summary>DB Required Secrets</summary>
 
 ````yaml
-kubectl create secret generic db-secret \
+kubectl create secret generic db-encryption \
 --from-literal=db-encryption-key='<SECRET_ENCRYPTION_KEY_SECRET_TO_CHANGE>' \
 --namespace homarr
 ````
@@ -90,8 +91,13 @@ To create the necessary database secrets, execute the following command:
 <summary>Required Secrets</summary>
 
 ````yaml
-kubectl create secret generic db-secret \
+kubectl create secret generic db-encryption \
 --from-literal=db-encryption-key='<SECRET_ENCRYPTION_KEY_SECRET_TO_CHANGE>' \
+--namespace homarr
+````
+
+````yaml
+kubectl create secret generic db-secret \
 --from-literal=db-url='mysql://user:password@host:port/homarrdb' \
 --namespace homarr
 ````
@@ -116,11 +122,17 @@ To create the necessary database secrets, execute the following command:
 <summary>Required Secrets</summary>
 
 ````yaml
-kubectl create secret generic db-secret \
+kubectl create secret generic db-encryption \
 --from-literal=db-encryption-key='<SECRET_ENCRYPTION_KEY_SECRET_TO_CHANGE>' \
+--namespace homarr
+````
+
+````yaml
+kubectl create secret generic db-secret \
 --from-literal=db-url='postgresql://user:password@host:port/homarrdb' \
 --namespace homarr
 ````
+
 </details>
 
 Below is an example of the override values file:
