@@ -106,6 +106,6 @@ jobs:
         if: steps.pr_title_check.outputs.result == 'true' &&
           steps.commit_exists.outputs.result == 'false' &&
           !contains(steps.pr.outputs.labels, 'skip-chart-meta')
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: ${{ env.COMMIT_MESSAGE }}
