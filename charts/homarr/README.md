@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg" align="right" width="92" alt="homarr logo">
 
-![Version: 8.2.3](https://img.shields.io/badge/Version-8.2.3-informational?style=flat)
+![Version: 8.2.4](https://img.shields.io/badge/Version-8.2.4-informational?style=flat)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat)
 ![AppVersion: v1.43.3](https://img.shields.io/badge/AppVersion-v1.43.3-informational?style=flat)
 
@@ -435,8 +435,12 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/"}]}]` | Ingress hosts configuration |
 | ingress.ingressClassName | string | `""` | Ingress class name |
 | ingress.tls | list | `[]` | Ingress TLS configuration |
+| livenessProbe.httpGet.failureThreshold | int | `3` |  |
+| livenessProbe.httpGet.initialDelaySeconds | int | `10` | Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start.  |
 | livenessProbe.httpGet.path | string | `"/api/health/live"` | This is the liveness check endpoint used by Kubernetes to determine if the application is still running. |
+| livenessProbe.httpGet.periodSeconds | int | `10` |  |
 | livenessProbe.httpGet.port | int | `7575` | The port on which the liveness check will be performed. This must be the same as the container port exposed by the application. |
+| livenessProbe.httpGet.timeoutSeconds | int | `1` |  |
 | nameOverride | string | `""` | Overrides chart's name |
 | nodeSelector | object | `{}` | Node selectors for pod scheduling |
 | persistence.homarrDatabase.accessMode | string | `"ReadWriteOnce"` | homarr-database access mode |
@@ -457,8 +461,12 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | podSecurityContext | object | `{}` | Pod security context |
 | rbac | object | `{"enabled":false}` | Enable RBAC resources for Kubernetes integration Creates Role, ClusterRole, and associated bindings for Homarr's Kubernetes features |
 | rbac.enabled | bool | `false` | Enable to create RBAC resources and activate Kubernetes integration |
+| readinessProbe.httpGet.failureThreshold | int | `3` |  |
+| readinessProbe.httpGet.initialDelaySeconds | int | `10` | Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start.  |
 | readinessProbe.httpGet.path | string | `"/api/health/ready"` | This is the readiness check endpoint used by Kubernetes to determine if the application is ready to handle traffic. |
+| readinessProbe.httpGet.periodSeconds | int | `10` |  |
 | readinessProbe.httpGet.port | int | `7575` | The port on which the readiness check will be performed. This must match the container's exposed port. |
+| readinessProbe.httpGet.timeoutSeconds | int | `1` |  |
 | replicaCount | int | `1` | Number of replicas |
 | resources | object | `{}` | Resource configuration |
 | securityContext | object | `{}` | Security context |

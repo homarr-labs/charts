@@ -165,6 +165,11 @@ livenessProbe:
     path: /api/health/live
     # -- The port on which the liveness check will be performed. This must be the same as the container port exposed by the application.
     port: 7575
+    # -- Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start. 
+    initialDelaySeconds: 10
+    timeoutSeconds: 1
+    periodSeconds: 10
+    failureThreshold: 3
 
 readinessProbe:
   httpGet:
@@ -172,6 +177,11 @@ readinessProbe:
     path: /api/health/ready
     # -- The port on which the readiness check will be performed. This must match the container's exposed port.
     port: 7575
+    # -- Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start. 
+    initialDelaySeconds: 10
+    timeoutSeconds: 1
+    periodSeconds: 10
+    failureThreshold: 3
 
 # -- containerPorts defines the ports to open on the container. It is a map where each entry specifies:
 #    - `port`     (int)    (required): The port number to expose inside the container.
