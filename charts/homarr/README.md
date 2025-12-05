@@ -435,12 +435,12 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/"}]}]` | Ingress hosts configuration |
 | ingress.ingressClassName | string | `""` | Ingress class name |
 | ingress.tls | list | `[]` | Ingress TLS configuration |
-| livenessProbe.httpGet.failureThreshold | int | `3` |  |
-| livenessProbe.httpGet.initialDelaySeconds | int | `10` | Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start.  |
+| livenessProbe.failureThreshold | int | `3` | Failure threshold for liveness probe - number of consecutive failures before pod is restarted |
 | livenessProbe.httpGet.path | string | `"/api/health/live"` | This is the liveness check endpoint used by Kubernetes to determine if the application is still running. |
-| livenessProbe.httpGet.periodSeconds | int | `10` |  |
 | livenessProbe.httpGet.port | int | `7575` | The port on which the liveness check will be performed. This must be the same as the container port exposed by the application. |
-| livenessProbe.httpGet.timeoutSeconds | int | `1` |  |
+| livenessProbe.initialDelaySeconds | int | `10` | Initial delay in seconds before the liveness probe starts |
+| livenessProbe.periodSeconds | int | `10` | Period in seconds between liveness probe checks |
+| livenessProbe.timeoutSeconds | int | `1` | Timeout in seconds for each liveness probe check |
 | nameOverride | string | `""` | Overrides chart's name |
 | nodeSelector | object | `{}` | Node selectors for pod scheduling |
 | persistence.homarrDatabase.accessMode | string | `"ReadWriteOnce"` | homarr-database access mode |
@@ -461,12 +461,12 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | podSecurityContext | object | `{}` | Pod security context |
 | rbac | object | `{"enabled":false}` | Enable RBAC resources for Kubernetes integration Creates Role, ClusterRole, and associated bindings for Homarr's Kubernetes features |
 | rbac.enabled | bool | `false` | Enable to create RBAC resources and activate Kubernetes integration |
-| readinessProbe.httpGet.failureThreshold | int | `3` |  |
-| readinessProbe.httpGet.initialDelaySeconds | int | `10` | Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start.  |
+| readinessProbe.failureThreshold | int | `3` | Failure threshold for readiness probe - number of consecutive failures before pod is considered unready |
 | readinessProbe.httpGet.path | string | `"/api/health/ready"` | This is the readiness check endpoint used by Kubernetes to determine if the application is ready to handle traffic. |
-| readinessProbe.httpGet.periodSeconds | int | `10` |  |
 | readinessProbe.httpGet.port | int | `7575` | The port on which the readiness check will be performed. This must match the container's exposed port. |
-| readinessProbe.httpGet.timeoutSeconds | int | `1` |  |
+| readinessProbe.initialDelaySeconds | int | `10` | Initial delay in seconds before the readiness probe starts. increase this value if the pod is slow to fully start. |
+| readinessProbe.periodSeconds | int | `10` | Period in seconds between readiness probe checks |
+| readinessProbe.timeoutSeconds | int | `1` | Timeout in seconds for each readiness probe check |
 | replicaCount | int | `1` | Number of replicas |
 | resources | object | `{}` | Resource configuration |
 | securityContext | object | `{}` | Security context |

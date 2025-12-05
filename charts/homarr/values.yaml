@@ -160,13 +160,13 @@ service:
   ipFamilies: [ ]
 
 livenessProbe:
-  # Failure threshold for liveness probe - number of consecutive failures before pod is restarted
+  # -- Failure threshold for liveness probe - number of consecutive failures before pod is restarted
   failureThreshold: 3
-  # Initial delay in seconds before the liveness probe starts
+  # -- Initial delay in seconds before the liveness probe starts
   initialDelaySeconds: 10
-  # Timeout in seconds for each liveness probe check
+  # -- Timeout in seconds for each liveness probe check
   timeoutSeconds: 1
-  # Period in seconds between liveness probe checks
+  # -- Period in seconds between liveness probe checks
   periodSeconds: 10
   httpGet:
     # -- This is the liveness check endpoint used by Kubernetes to determine if the application is still running.
@@ -176,13 +176,13 @@ livenessProbe:
     # -- Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start. 
 
 readinessProbe:
-  # Failure threshold for readiness probe - number of consecutive failures before pod is considered unready
+  # -- Failure threshold for readiness probe - number of consecutive failures before pod is considered unready
   failureThreshold: 3
-  # Initial delay in seconds before the readiness probe starts. increase this value if the pod is slow to fully start.
+  # -- Initial delay in seconds before the readiness probe starts. increase this value if the pod is slow to fully start.
   initialDelaySeconds: 10
-  # Timeout in seconds for each readiness probe check
+  # -- Timeout in seconds for each readiness probe check
   timeoutSeconds: 1
-  # Period in seconds between readiness probe checks
+  # -- Period in seconds between readiness probe checks
   periodSeconds: 10
   httpGet:
     # -- This is the readiness check endpoint used by Kubernetes to determine if the application is ready to handle traffic.
