@@ -43,7 +43,7 @@ jobs:
 
           cp charts/homarr/README.md "$DEST/helm.md"
           sed -i '1s/# Homarr/# Helm/' "$DEST/helm.md"
-          
+
           cd target-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
