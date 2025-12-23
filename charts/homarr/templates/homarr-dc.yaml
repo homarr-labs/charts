@@ -160,6 +160,26 @@ spec:
             - name: {{ .Values.persistence.homarrDatabase.name }}
               mountPath: {{ .Values.persistence.homarrDatabase.mountPath }}
           {{- end }}
+          {{- if and .Values.securityContext .Values.securityContext.readOnlyRootFilesystem }}
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-etc
+              mountPath: /etc/nginx
+            - name: nginx-lib
+              mountPath: /var/lib/nginx
+            - name: nginx-lib-logs
+              mountPath: /var/lib/nginx/logs
+            - name: nginx-lib-tmp
+              mountPath: /var/lib/nginx/tmp
+            - name: nginx-log
+              mountPath: /var/log/nginx
+            - name: nginx-run
+              mountPath: /run/nginx
+            - name: nginx-template
+              mountPath: /etc/nginx/templates
+              readOnly: true
+          {{- end }}
+
 
       volumes:
       {{- if .Values.persistence.homarrTrustedCerts.enabled }}
@@ -179,6 +199,25 @@ spec:
         - name: {{ .Values.persistence.homarrDatabase.name }}
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.homarrDatabase.name }}
+      {{- end }}
+      {{- if and .Values.securityContext .Values.securityContext.readOnlyRootFilesystem }}
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-etc
+          emptyDir: {}
+        - name: nginx-lib
+          emptyDir: {}
+        - name: nginx-lib-logs
+          emptyDir: {}
+        - name: nginx-lib-tmp
+          emptyDir: {}
+        - name: nginx-log
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
+        - name: nginx-template
+          configMap:
+            name: {{ include "homarr.fullname" . }}-nginx
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
