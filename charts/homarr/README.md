@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg" align="right" width="92" alt="homarr logo">
 
-![Version: 8.6.0](https://img.shields.io/badge/Version-8.6.0-informational?style=flat)
+![Version: 8.6.1](https://img.shields.io/badge/Version-8.6.1-informational?style=flat)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat)
 ![AppVersion: v1.47.0](https://img.shields.io/badge/AppVersion-v1.47.0-informational?style=flat)
 
@@ -418,11 +418,11 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | envSecrets.dbEncryption.key | string | `"db-encryption-key"` | Secret key for SECRET_ENCRYPTION_KEY can be generated with `openssl rand -hex 32` |
 | fullnameOverride | string | `""` | Overrides chart's fullname |
 | hostAliases | list | `[]` | Add static entries to /etc/hosts in the Pod. This is useful in the following cases: - You are running in a dual-stack cluster (IPv4 + IPv6) and want to force usage of IPv4 for specific hostnames - Your application is having DNS resolution issues or IPv6 preference issues - You need to override or simulate DNS entries without changing global DNS - You are running in an air-gapped or isolated environment without external DNS Example: hostAliases:   - ip: "192.168.1.10"     hostnames:       - "example.com"       - "example.internal" |
-| httproute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"my-gateway","namespace":"default"}],"rules":[{"backendRefs":[{"name":"homarr","port":8080}],"filters":[],"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Gateway API HTTPRoute configuration |
+| httproute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"my-gateway","namespace":"default"}],"rules":[{"backendRefs":[{"name":"homarr","port":7575}],"filters":[],"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Gateway API HTTPRoute configuration |
 | httproute.enabled | bool | `false` | Enable HTTPRoute |
 | httproute.hostnames | list | `["chart-example.local"]` | Hostnames this route matches (similar to ingress.hosts.host) |
 | httproute.parentRefs | list | `[{"name":"my-gateway","namespace":"default"}]` | References to the parent Gateway(s) this route attaches to. Each item must include at least a `name`, and optionally a `namespace`. |
-| httproute.rules | list | `[{"backendRefs":[{"name":"homarr","port":8080}],"filters":[],"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]` | List of routing rules. Each rule can include: - matches: path/header/query matching - filters: optional transformations (redirects, header modifications, etc.) - backendRefs: one or more Kubernetes Services to forward traffic to |
+| httproute.rules | list | `[{"backendRefs":[{"name":"homarr","port":7575}],"filters":[],"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]` | List of routing rules. Each rule can include: - matches: path/header/query matching - filters: optional transformations (redirects, header modifications, etc.) - backendRefs: one or more Kubernetes Services to forward traffic to |
 | httproute.rules[0].filters | list | `[]` | Optional filters for this rule (default: empty) |
 | httproute.rules[0].matches[0].path.type | string | `"PathPrefix"` | Path match type. One of: Exact, PathPrefix, RegularExpression |
 | httproute.rules[0].matches[0].path.value | string | `"/"` | Path value to match |
