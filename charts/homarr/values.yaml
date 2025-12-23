@@ -173,7 +173,7 @@ livenessProbe:
     path: /api/health/live
     # -- The port on which the liveness check will be performed. This must be the same as the container port exposed by the application.
     port: 7575
-    # -- Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start. 
+    # -- Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start.
 
 readinessProbe:
   # -- Failure threshold for readiness probe - number of consecutive failures before pod is considered unready
