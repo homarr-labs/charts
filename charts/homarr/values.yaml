@@ -140,7 +140,7 @@ service:
   ports:
     app:
       # -- Service port
-      port: 7575
+      port: 3000
       # -- Service target port
       targetPort: http
       # -- Service protocol
@@ -172,7 +172,7 @@ livenessProbe:
     # -- This is the liveness check endpoint used by Kubernetes to determine if the application is still running.
     path: /api/health/live
     # -- The port on which the liveness check will be performed. This must be the same as the container port exposed by the application.
-    port: 7575
+    port: http
     # -- Initial delay before readiness probe is executed. increase this value if the pod is slow to fully start. 
 
 readinessProbe:
@@ -188,7 +188,7 @@ readinessProbe:
     # -- This is the readiness check endpoint used by Kubernetes to determine if the application is ready to handle traffic.
     path: /api/health/ready
     # -- The port on which the readiness check will be performed. This must match the container's exposed port.
-    port: 7575
+    port: http
 
 # -- containerPorts defines the ports to open on the container. It is a map where each entry specifies:
 #    - `port`     (int)    (required): The port number to expose inside the container.
@@ -198,7 +198,7 @@ readinessProbe:
 # By default, this configuration exposes TCP port 7575 with the name `http`.
 containerPorts:
   http:
-    port: 7575
+    port: 3000
     protocol: TCP
 
 # -- Gateway API HTTPRoute configuration
@@ -232,7 +232,7 @@ httproute:
       filters: []
       backendRefs:
         - name: homarr
-          port: 8080
+          port: http
 
 # Ingress configuration
 ingress:
