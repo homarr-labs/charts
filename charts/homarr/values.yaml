@@ -13,7 +13,7 @@ image:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion
-  tag: "v1.59.1"
+  tag: "v1.59.2"
 
 env:
   # -- Your local time zone
