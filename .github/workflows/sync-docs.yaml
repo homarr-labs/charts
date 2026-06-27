@@ -17,33 +17,21 @@ jobs:
             charts/homarr/README.md
           sparse-checkout-cone-mode: false
 
-      - name: Checkout Homarr documentation Repo
+      - name: Checkout Homarr docs
         uses: actions/checkout@v6
         with:
-          repository: homarr-labs/documentation
+          repository: homarr-labs/homarr
           path: target-repo
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: master
-
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+          ref: dev
 
       - name: Sync Documentation
         run: |
-          APP_VERSION=$(grep 'AppVersion:' target-repo/charts/homarr/README.md | sed -E 's/.*AppVersion: v([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-          echo "App Version: $APP_VERSION"
-
-          VERSION_EXISTS=$(jq -r '.[]' target-repo/versions.json | grep -Fx "$APP_VERSION" || true)
-
-          if [ -n "$VERSION_EXISTS" ]; then
-          DEST="target-repo/versioned_docs/version-$APP_VERSION/getting-started/installation"
-          else
-          DEST="target-repo/docs/getting-started/installation"
-          fi
-
+          DEST="target-repo/apps/docs/docs/getting-started/installation"
+          mkdir -p "$DEST"
           cp charts/homarr/README.md "$DEST/helm.md"
           sed -i '1s/# Homarr/# Helm/' "$DEST/helm.md"
-          
+
           cd target-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -57,7 +45,7 @@ jobs:
           private_key: ${{ secrets.HOMARR_DOCS_SYNC_APP_PRIVATE_KEY }}
           app_id: ${{ vars.HOMARR_DOCS_SYNC_APP_ID }}
           installation_retrieval_mode: repository
-          installation_retrieval_payload: homarr-labs/documentation
+          installation_retrieval_payload: homarr-labs/homarr
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
@@ -65,7 +53,7 @@ jobs:
         with:
           token: ${{ steps.obtainToken.outputs.token }}
           branch: docs/update-helm-docs
-          base: master
+          base: dev
           title: Update Helm chart documentation
           delete-branch: true
           path: target-repo
@@ -77,6 +65,6 @@ jobs:
 
       - name: Enable Pull Request Automerge
         if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr merge --merge --auto "${{ steps.cpr.outputs.pull-request-number }}" --repo https://github.com/homarr-labs/documentation
+        run: gh pr merge --merge --auto "${{ steps.cpr.outputs.pull-request-number }}" --repo https://github.com/homarr-labs/homarr
         env:
           GH_TOKEN: ${{ steps.obtainToken.outputs.token }}
