@@ -1,0 +1,19 @@
+charts/homarr/values.yaml
+  s_5a936f5839129c::t_8165a7d5d16761 29-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "8d5acb48d5056b08abdf3a5dedb3aa3a4d5b5873",
+  "prompts": {},
+  "sessions": {
+    "s_5a936f5839129c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0f77b9157ffeC79OlM6vy9rewx",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "Thomas Camlong <thomas@ajnart.fr>"
+    }
+  }
+}
