@@ -17,13 +17,22 @@ jobs:
             charts/homarr/README.md
           sparse-checkout-cone-mode: false
 
+      - name: Obtain token
+        id: obtainToken
+        uses: tibdex/github-app-token@v2
+        with:
+          private_key: ${{ secrets.HOMARR_DOCS_SYNC_APP_PRIVATE_KEY }}
+          app_id: ${{ vars.HOMARR_DOCS_SYNC_APP_ID }}
+          installation_retrieval_mode: repository
+          installation_retrieval_payload: homarr-labs/homarr
+
       - name: Checkout Homarr docs
         uses: actions/checkout@v6
         with:
           repository: homarr-labs/homarr
           path: target-repo
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: dev
+          token: ${{ steps.obtainToken.outputs.token }}
+          ref: main
 
       - name: Sync Documentation
         run: |
@@ -38,22 +47,13 @@ jobs:
           git add .
           git commit -m "docs(helm): Update Helm chart documentation" || echo "No changes to commit"
 
-      - name: Obtain token
-        id: obtainToken
-        uses: tibdex/github-app-token@v2
-        with:
-          private_key: ${{ secrets.HOMARR_DOCS_SYNC_APP_PRIVATE_KEY }}
-          app_id: ${{ vars.HOMARR_DOCS_SYNC_APP_ID }}
-          installation_retrieval_mode: repository
-          installation_retrieval_payload: homarr-labs/homarr
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         id: cpr
         with:
           token: ${{ steps.obtainToken.outputs.token }}
           branch: docs/update-helm-docs
-          base: dev
+          base: main
           title: Update Helm chart documentation
           delete-branch: true
           path: target-repo
