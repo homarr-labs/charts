@@ -32,7 +32,7 @@ jobs:
           repository: homarr-labs/homarr
           path: target-repo
           token: ${{ steps.obtainToken.outputs.token }}
-          ref: dev
+          ref: main
 
       - name: Sync Documentation
         run: |
@@ -53,7 +53,7 @@ jobs:
         with:
           token: ${{ steps.obtainToken.outputs.token }}
           branch: docs/update-helm-docs
-          base: dev
+          base: main
           title: Update Helm chart documentation
           delete-branch: true
           path: target-repo
