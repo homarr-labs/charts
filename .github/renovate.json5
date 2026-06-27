@@ -8,9 +8,10 @@
     "{{datasource}}",
     "{{updateType}}"
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["\\.yaml$"],
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)Chart\\.yaml$/"],
       "matchStrings": [
         "# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
       ]
