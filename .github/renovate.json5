@@ -1,29 +1,33 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
   ],
-  "labels": [
-    "dependencies",
-    "{{datasource}}",
-    "{{updateType}}"
+  labels: [
+    'dependencies',
+    '{{datasource}}',
+    '{{updateType}}',
   ],
-  "customManagers": [
+  customManagers: [
     {
-      "customType": "regex",
-      "managerFilePatterns": ["/(^|/)Chart\\.yaml$/"],
-      "matchStrings": [
-        "# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
-      ]
-    }
+      customType: 'regex',
+      managerFilePatterns: [
+        '/(^|/)Chart\\.yaml$/',
+      ],
+      matchStrings: [
+        '# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: ["\']?(?<currentValue>.+?)["\']?\\n',
+      ],
+    },
   ],
-  "packageRules": [
+  packageRules: [
     {
-      "matchDatasources": ["helm"],
-      "commitMessageTopic": "{{depName}} Helm release"
-    }
+      matchDatasources: [
+        'helm',
+      ],
+      commitMessageTopic: '{{depName}} Helm release',
+    },
   ],
-  "baseBranches": [
-    "dev"
-  ]
+  baseBranchPatterns: [
+    'dev',
+  ],
 }
