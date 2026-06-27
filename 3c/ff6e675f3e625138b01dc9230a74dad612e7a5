@@ -1,0 +1,19 @@
+.github/workflows/sync-docs.yaml
+  s_5a936f5839129c::t_bde7bd2c095e37 20,23,26,30-31,34,48,56,68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "3cff6e675f3e625138b01dc9230a74dad612e7a5",
+  "prompts": {},
+  "sessions": {
+    "s_5a936f5839129c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0f77b9157ffeC79OlM6vy9rewx",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "Thomas Camlong <thomas@ajnart.fr>"
+    }
+  }
+}
