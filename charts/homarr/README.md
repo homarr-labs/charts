@@ -383,6 +383,7 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | containerPorts | object | `{"http":{"port":7575,"protocol":"TCP"}}` | containerPorts defines the ports to open on the container. It is a map where each entry specifies:    - `port`     (int)    (required): The port number to expose inside the container.    - `protocol` (string) (required): The network protocol (TCP or UDP) used for the port.    - `disabled` (bool)              : Optional flag to disable this port (defaults to false). Can be overridden via Helm values.  By default, this configuration exposes TCP port 7575 with the name `http`. |
 | database.migrationEnabled | bool | `true` | Database migration configuration. DB_MIGRATIONS_DISABLED Set to `true` to disable database migrations. Migrations are enabled by default (`false`). |
 | database.type | string | `"sqlite"` | Database type: sqlite, mysql or postgresql |
+| env.AUTH_COOKIE_PREFIX | string | `"homarr"` | Prefix used for all authentication cookies. Change if you run another Auth.js/NextAuth app on the same hostname to avoid cookie name collisions. Only letters, numbers, hyphens and underscores. |
 | env.AUTH_LDAP_BASE | string | `nil` | Base dn of your LDAP server |
 | env.AUTH_LDAP_BIND_DN | string | `nil` | User used for finding users and groups |
 | env.AUTH_LDAP_GROUP_CLASS | string | `"groupOfUniqueNames"` | Class used for querying groups |
