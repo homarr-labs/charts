@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout helm chart Repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           sparse-checkout: |
             charts/homarr/README.md
@@ -27,7 +27,7 @@ jobs:
           installation_retrieval_payload: homarr-labs/homarr
 
       - name: Checkout Homarr docs
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: homarr-labs/homarr
           path: target-repo
