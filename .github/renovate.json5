@@ -27,7 +27,7 @@
       commitMessageTopic: '{{depName}} Helm release',
     },
   ],
-  baseBranches: [
+  baseBranchPatterns: [
     'dev',
   ],
 }
