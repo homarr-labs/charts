@@ -45,7 +45,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "docs(helm): Update Helm chart documentation" || echo "No changes to commit"
+          git commit -m "docs(helm): update chart installation page" || echo "No changes to commit"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
@@ -54,7 +54,7 @@ jobs:
           token: ${{ steps.obtainToken.outputs.token }}
           branch: docs/update-helm-docs
           base: main
-          title: Update Helm chart documentation
+          title: "docs(helm): update chart installation page"
           delete-branch: true
           path: target-repo
           body: |
