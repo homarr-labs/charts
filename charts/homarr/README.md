@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg" align="right" width="92" alt="homarr logo">
 
-![Version: 8.22.0](https://img.shields.io/badge/Version-8.22.0-informational?style=flat)
+![Version: 8.22.1](https://img.shields.io/badge/Version-8.22.1-informational?style=flat)
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat)
 ![AppVersion: v1.70.0](https://img.shields.io/badge/AppVersion-v1.70.0-informational?style=flat)
 
