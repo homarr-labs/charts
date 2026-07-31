@@ -4,6 +4,39 @@ entries:
   - annotations:
       artifacthub.io/changes: |-
         - kind: changed
+          description: Update ghcr.io/homarr-labs/homarr docker tag to v1.73.0
+      artifacthub.io/links: |-
+        - name: App Source
+          url: https://github.com/homarr-labs/homarr
+        - name: Chart Source
+          url: https://github.com/homarr-labs/charts/tree/main/charts/homarr
+      artifacthub.io/signKey: |
+        fingerprint: 36F9A886ABA6AA4C1588B942E7EC1AA0EFD54840
+        url: https://homarr-labs.github.io/charts/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.73.0
+    created: "2026-07-31T19:36:12.794053422Z"
+    description: A Helm chart to deploy homarr for Kubernetes
+    digest: db54fc640a209bb1076572e863fffb4879a331f79b50947052a068ba11964a0d
+    home: https://homarr-labs.github.io/charts/charts/homarr/
+    icon: https://raw.githubusercontent.com/homarr-labs/charts/refs/heads/main/charts/homarr/icon.svg
+    keywords:
+    - homarr
+    - dashboard
+    kubeVersion: '>=1.24.0-0'
+    maintainers:
+    - email: homarr-labs@proton.me
+      name: oben01
+    name: homarr
+    sources:
+    - https://github.com/homarr-labs/homarr
+    type: application
+    urls:
+    - https://github.com/homarr-labs/charts/releases/download/homarr-8.25.0/homarr-8.25.0.tgz
+    version: 8.25.0
+  - annotations:
+      artifacthub.io/changes: |-
+        - kind: changed
           description: Update ghcr.io/homarr-labs/homarr docker tag to v1.72.0
       artifacthub.io/links: |-
         - name: App Source
@@ -4269,4 +4302,4 @@ entries:
     urls:
     - https://github.com/homarr-labs/charts/releases/download/homarr-0.0.1/homarr-0.0.1.tgz
     version: 0.0.1
-generated: "2026-07-24T21:17:44.873644839Z"
+generated: "2026-07-31T19:36:12.794526113Z"
