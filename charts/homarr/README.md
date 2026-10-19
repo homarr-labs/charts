@@ -445,6 +445,7 @@ All available values are listed on the [artifacthub](https://artifacthub.io/pack
 | nameOverride | string | `""` | Overrides chart's name |
 | nodeSelector | object | `{}` | Node selectors for pod scheduling |
 | persistence.homarrDatabase.accessMode | string | `"ReadWriteOnce"` | homarr-database access mode |
+| persistence.homarrDatabase.annotations | object | `{}` | homarr-database persistent volume claim annotations |
 | persistence.homarrDatabase.enabled | bool | `false` | Enable homarr-database persistent storage |
 | persistence.homarrDatabase.mountPath | string | `"/appdata"` | homarr-database mount path inside the pod |
 | persistence.homarrDatabase.name | string | `"homarr-database"` | homarr-database persistent storage name |

@@ -301,6 +301,8 @@ persistence:
     mountPath: "/appdata"
     # -- homarr-database optional volumeClaimName to target specific PV
     volumeClaimName: ""
+    # -- homarr-database persistent volume claim annotations
+    annotations: {}
   homarrTrustedCerts:
     # -- Enable trusted certificates persistence
     enabled: false
